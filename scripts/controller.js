@@ -39,6 +39,6 @@ controller.loadChar = function(stringName){
     playerMobile.passiveAbs = parseChar.passiveAbs;
     util.printToGameWindow(playerMobile.stringName +' the ' + playerMobile.charClass +' has joined the world!');
     playerMobile.passiveActs();
-    updateStats();
+    playerMobile.updateStats();
   }
 };

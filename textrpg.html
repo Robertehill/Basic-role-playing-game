@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html5>
+  <head>
+    <title>Text Rpg</title>
+    <link rel = "stylesheet" type= "text/css" href = "styles/textrpg.css"/>
+  </head>
+  <body>
+    <div id="headline">Text Rpg Test</div>
+    <div id= "gameWindow">Game log here!</div>
+
+    <div id ="uiWindow">
+        <div id ="statWindow">
+          <table id='statTable'>
+            <th id="nameTable"><td id="classTable"></td> <td id="levelTable"></td></th>
+            <tr>
+              <td>Hit Points:</td><td id="hitsTable">0</td><td>Strength:</td><td id="strTable">0</td>
+            </tr>
+            <tr>
+              <td>Mana:</td><td id="manaTable"></td><td>Wisdom:</td><td id="wisTable">0</td>
+            </tr>
+            <tr>
+              <td>Stamina:</td><td id="stamTable"><td>Dexterity:</td><td id="dexTable">0</td>
+            </tr>
+              <td>Armor:</td><td id="armorTable">0</td><td>Magic Resist:</td><td id="magicResist">0</td>
+            </tr>
+            <tr>
+               <td>Right Hand :</td><td id ="rightHand"></td><td id ="rightHandEquip"></td><td><button id ="rightHandEquipBut" type = "click">Equip</button></td>
+            </tr>
+            <tr>
+              <td>Left Hand :</td><td id ="leftHand"></td><td id ="leftHandEquip"></td><td><button id ="leftHandEquipBut" type = "click">Equip</button></td>
+            </tr>
+            <tr>
+               <td>Head :</td><td id ="head"></td><td id ="headEquip"></td><td><button id ="headEquipBut" type = "click">Equip</button></td>
+            </tr>
+            <tr>
+              <td>Chest :</td><td id ="chest"></td><td id ="chestEquip"></td><td><button id ="chestEquipBut" type = "click">Equip</button></td>
+            </tr>
+            <tr>
+              <td>Arms :</td><td id ="arms"></td><td id ="armsEquip"></td><td><button id ="armsEquipBut" type = "click">Equip</button></td>
+            </tr>
+            <tr>
+              <td>Gloves :</td><td id ="gloves"></td><td id ="glovesEquip"></td><td><button id ="glovesEquipBut" type = "click">Equip</button></td>
+            </tr>
+            <tr>
+              <td>Legs :</td><td id ="legs"></td><td id ="legsEquip"></td><td><button id ="legsEquipBut" type = "click">Equip</button></td>
+            </tr>
+            <tr>
+              <td>Boots :</td><td id ="boots"></td><td id ="bootsEquip"></td><td><button id ="bootsEquipBut" type = "click">Equip</button></td>
+            </tr>
+          </table>
+        </div>
+        <p>
+          <p>Actions<p/>
+          <form id = "aggrActions"></form>
+
+          <form id = "passActions"></form>
+          <p/>
+        <form id ="charCreateForm">
+            <p>Enter Character Name Here, To load a character type the same name</p>
+            <input type="text" id="charNameForm"><br />
+            <select id="charClass">
+              <option value="Warrior">Warrior</option>
+              <option value="Rogue">Rogue</option>
+              <option value="Wizard">Wizard</option>
+            </select>
+            <br /><button type="click" id="createCharButton">Create your Character</button>
+          </form>
+          <div id ="opponentStats">Monster stats here <br />
+            <table id='opponentStatTable'>
+              <th id="opponentnameTable"><td id="opponentclassTable"></td> <td id="opponentlevelTable"></td></th>
+              <tr>
+                <td>Hit Points:</td><td id="opponenthitsTable">0</td><td>Strength:</td><td id="opponentstrTable">0</td>
+              </tr>
+              <tr>
+                <td>Mana:</td><td id="opponentmanaTable"></td><td>Wisdom:</td><td id="opponentwisTable">0</td>
+              </tr>
+              <tr>
+                <td>Stamina:</td><td id="opponentstamTable"><td>Dexterity:</td><td id="opponentdexTable">0</td>
+              </tr>
+                <td>Armor:</td><td id="opponentarmorTable">0</td><td>Magic Resist:</td><td id="opponentmagicResist">0</td>
+              </tr>
+             <!--  <tr>
+               <td>Right Hand :</td><td id ="opponentrightHand"></td>
+              </tr>
+              <tr>
+                <td>Left Hand :</td><td id ="opponentleftHand"></td>
+              </tr>  -->
+          </table>
+          </div>
+    </div>
+    <script type="text/javascript" src ="Vendor/jQuery214min.js"></script>
+    <script type="text/javascript" src ="scripts/items.js"></script>
+    <script type="text/javascript" src ='scripts/utilities.js'></script>
+    <script type="text/javascript" src ='scripts/view.js'></script>
+    <script type="text/javascript" src ='scripts/controller.js'></script>
+    <script type="text/javascript" src ='scripts/playerMobile.js'></script>
+    <script type="text/javascript" src ='scripts/npc.js'></script>
+    <script type="text/javascript" src ='scripts/spells.js'></script>
+    <script type="text/javascript" src ="scripts/charCreate.js"></script>
+    <script type="text/javascript" src ="scripts/ability.js"></script>
+ <script type="text/javascript" src ='scripts/combat.js'></script>
+ <script type="text/javascript" src ='scripts/game.js'></script>
+  </body>
+</html5>

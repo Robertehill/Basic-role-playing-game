@@ -1,0 +1,81 @@
+*{
+  /*border: 1px solid black;*/
+}
+/*.aggrActions{
+  visibility: hidden;
+}
+.passActions{
+  visibility: hidden;
+}*/
+
+#opponentStats{
+  display: none;
+}
+#statWindow{
+  /*visibility: hidden;*/
+  display: none;
+}
+#gameWindow{
+  background-color: black;
+  height: 500px;
+  width: 500px;
+  color: white;
+  padding: 2em;
+  position: fixed;
+  top:100px;
+  overflow: scroll;
+
+
+}
+
+#headline{
+  font-size: 60px;
+  text-align: center;
+  border:2px solid red;
+  width: 400px;
+  position: relative;
+  top:10px;
+  left:50%;
+  margin-left:-254px;
+}
+#uiWindow{
+  border: 3px solid black;
+  /*height: 500px;*/
+  width: 600px;
+  padding: 1em;
+  margin: 1em;
+  position: relative;
+  top:20px;
+  left:50%;
+}
+#charName{
+  font-size: 20px;
+}
+#hitsTable{
+  color: red;
+}
+#manaTable{
+  color: blue;
+}
+#stamTable{
+  color: #E6E600;
+}
+
+p.negitive{
+  color: red;
+}
+p.positive{
+  color: green;
+}
+p.poison{
+  color: lime;
+}
+p.stun{
+  color: blue;
+}
+p.loot{
+  color: yellow;
+}
+p.exp{
+  color: purple;
+}

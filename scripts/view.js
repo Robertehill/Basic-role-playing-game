@@ -9,6 +9,11 @@ view.endCombat = function() {
     $('#cast').remove();
   }
 };
+view.startCombat = function(argument) {
+  $('#usePassAb').remove();
+  $('#usePassAbBut').remove();
+  $('#opponentStats').fadeIn();
+};
 view.removeEqupFromHtml = function() {
   $('#rightHandList').remove();
   $('#leftHandList').remove();
@@ -23,7 +28,6 @@ view.removeEqupFromHtml = function() {
 view.playerEqiupToHtml = function() {
   var tempEquipArray = ['rightHand','leftHand','head','chest','arms','gloves','legs','boots'];
   tempEquipArray.forEach(function(element,index,array) {
-    // console.log(element);
     if (playerMobile[element] != null){
       $('#'+element).html(playerMobile[element].stringName);
     }

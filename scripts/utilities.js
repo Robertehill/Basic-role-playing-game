@@ -1,7 +1,6 @@
 var util = {};
 
 util.updateScroll = function(){
-  // console.log('scroll function');
   var element = document.getElementById('gameWindow');
   element.scrollTop = element.scrollHeight - element.clientHeight;
 };

@@ -241,6 +241,7 @@ playerMobile.combat = function(opponent){
       util.printToGameWindow('You need more mana to do that','negitive');
       return;
     }
+    // break down to a get active spells function
     switch(spellChoice.stringName){
 
     case 'Fire Ball':
@@ -272,6 +273,7 @@ playerMobile.combat = function(opponent){
       util.printToGameWindow('You need more mana to do that','negitive');
       return;
     }
+    // break down to a getActiveWepAbs function
     switch($abChoice.stringName){
     case 'Rest':
       doCombatRest(playerMobile, playerMobile.combatant);
@@ -310,52 +312,31 @@ playerMobile.combat = function(opponent){
   };
   if (this.hitPoints > 0){
     util.printToGameWindow('You are fighting ' + opponent.stringName, 'negitive');
-    // need to refactor using JQ
-    var parent = document.getElementById('aggrActions');
-    var action = document.createElement('select');
-    parent.appendChild(action);
+    var $parent = $('#aggrActions');
+    var $action = $('<select>').attr('id', 'useWepAb');
+    $parent.append($action);
     var abs = playerMobile.knownWepAbs;
-    // $('#aggrActions').append($('<select>')
-    // .append($('<option>')));
-
     for (var i = 0; i < abs.length; i++) {
-      var opt = document.createElement('option');
-
-      opt.innerHTML = abs[i].stringName;
-      opt.value = abs[i].stringName;
-      action.appendChild(opt);
+      var $opt = $('<option>').html(abs[i].stringName).val(abs[i].stringName);
+      $action.append($opt);
     };
-    action.id = 'useWepAb';
-    var wepAbBut = document.createElement('button');
-    wepAbBut.type = 'click';
-    wepAbBut.id = 'useWepAbBut';
-    wepAbBut.innerHTML = 'Use Ability';
-    parent.appendChild(wepAbBut);
-
-    var wepAbButton = document.getElementById('useWepAbBut');
-    wepAbButton.addEventListener('click', useWepAb);
+    var $wepAbBut = $('<button>').html('Use Ability').attr('id','useWepAbBut');
+    $parent.append($wepAbBut);
+    $('#useWepAbBut').on('click', useWepAb);
 
     if (this.charClass ==='Wizard'){
-      var action2 = document.createElement('select');
-      parent.appendChild(action2);
+      var $action2 = $('<select>').attr('id','spells');
+      $parent.append($action2);
       var spells = playerMobile.knownSpells;
 
       for (var i = 0; i < spells.length; i++) {
-        var opt = document.createElement('option');
-
-        opt.innerHTML = spells[i].stringName;
-        opt.value = spells[i].stringName;
-        action2.appendChild(opt);
+        var $opt = $('<option>').html(spells[i].stringName).val(spells[i].stringName);
+        $action2.append($opt);
       };
-      action2.id = 'spells';
-      var castBut = document.createElement('button');
-      castBut.type = 'click';
-      castBut.id = 'cast';
-      castBut.innerHTML = 'Cast Spell';
-      parent.appendChild(castBut);
+      var $castBut = $('<button>').attr('id', 'cast').html('Cast Spell');
+      $parent.append($castBut);
+      $('#cast').on('click', castSpell);
 
-      var castButton = document.getElementById('cast');
-      castButton.addEventListener('click', castSpell);
     }
   }
   else{

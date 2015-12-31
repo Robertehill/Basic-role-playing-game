@@ -21,7 +21,7 @@ view.removeEqupFromHtml = function() {
 };
 
 view.playerEqiupToHtml = function() {
-  playerMobile.armorSlots.forEach(function(element,index,array) {
+  playerMobile.armorSlots.forEach(function(element) {
     if (playerMobile[element] != null){
       $('#'+element).html(playerMobile[element].stringName);
     }
@@ -34,7 +34,7 @@ view.playerEqiupToHtml = function() {
 
 view.playerStatsToHtml = function() {
   var tempArray = ['stringName','charClass','hits','mana','stam','str','dex','dex','wis','armor','magicResist'];
-  tempArray.forEach(function(element,index,array) {
+  tempArray.forEach(function(element) {
     $('#'+element+'Table').html(playerMobile[element]);
   });
   $('#levelTable').html('Level = ' + playerMobile.level +' Exp = ' + playerMobile.exp + ' Gold = ' + playerMobile.gold);
@@ -42,7 +42,7 @@ view.playerStatsToHtml = function() {
 
 view.addOpponentStatsToHtml = function() {
   var tempArray = ['stringName','charClass','hits','mana','stam','str','dex','dex','wis','armor','magicResist'];
-  tempArray.forEach(function(element,index,array) {
+  tempArray.forEach(function(element) {
     $('#opponent'+element+'Table').html(playerMobile.combatant[element]);
   });
   $('#opponentlevelTable').html('Level = ' + playerMobile.combatant.level);
@@ -57,9 +57,7 @@ view.makeWepAbList = function() {
     var $opt = $('<option>').html(abs[i].stringName).val(abs[i].stringName);
     $action.append($opt);
   };
-  var $wepAbBut = $('<button>').html('Use Ability').attr('id','useWepAbBut');
-  $parent.append($wepAbBut);
-  $('#useWepAbBut').on('click', combat.useWepAb);
+  $parent.append($('<button>').html('Use Ability').attr('id','useWepAbBut').on('click', combat.useWepAb));
 };
 
 view.makeSpellList = function() {

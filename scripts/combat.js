@@ -9,18 +9,10 @@ combat.hitChance = function(attacker, defender, hitBonus){
   dexChance = util.checkNaN(dexChance);
   hitBonus = util.checkNaN(hitBonus);
   dexChance += hitBonus;
-  if(dexChance < 1){
-    dexChance = 1;
-  }
-  if(dexChance >= 100){
-    return true;
-  }
-  else if (dexChance >= util.getRandomNum(1,100)){
-    return true;
-  }
-  else{
-    return false;
-  }
+  if(dexChance < 1){dexChance = 1;}
+  if(dexChance >= 100){return true;}
+  else if (dexChance >= util.getRandomNum(1,100)){return true;}
+  else{return false;}
 };
 
 combat.randomCombat = function(level, chance){
@@ -110,7 +102,6 @@ combat.castSpell = function(e) {
   }
   // TODO break down to a get active spells function
   switch(spellChoice.stringName){
-
   case 'Fire Ball':
     // console.log('casting fireBall');
     fireBallSpell.castDmg(playerMobile, playerMobile.combatant, 0);
@@ -125,7 +116,7 @@ combat.castSpell = function(e) {
     // add new spells here
   }
 };
-
+// TODO break this down to seperate methods
 combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
   var stamLoss = 0;
   hitBonus = util.checkNaN(hitBonus);

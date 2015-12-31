@@ -286,34 +286,6 @@ playerMobile.equip = function(event, bodyLoc) {
     playerMobile.bodyLoc = null;
   }
 };
-// left hand has some unquie rules and can't be grouped with the rest of the equipment
-$('#leftHandEquipBut').on('click', playerMobile.equipL);
-// TODO make this one event handler
-$('#rightHandEquipBut').on('click', function(e){
-  playerMobile.equip(e,'rightHand');
-});
-$('#headEquipBut').on('click', function(e){
-  playerMobile.equip(e,'head');
-});
-$('#chestEquipBut').on('click', function(e){
-  playerMobile.equip(e,'head');
-});
-$('#chestEquipBut').on('click', function(e){
-  playerMobile.equip(e,'chest');
-});
-$('#armsEquipBut').on('click', function(e){
-  playerMobile.equip(e,'arms');
-});
-$('#glovesEquipBut').on('click', function(e){
-  playerMobile.equip(e,'gloves');
-});
-$('#legsEquipBut').on('click', function(e){
-  playerMobile.equip(e,'legs');
-});
-$('#bootsEquipBut').on('click', function(e){
-  playerMobile.equip(e,'boots');
-});
-
 playerMobile.giveExp = function(attacker, defender){
   var exp = util.getRandomNum((defender.level * 10), (defender.level * 20));
   attacker.exp += exp;
@@ -323,26 +295,24 @@ playerMobile.giveExp = function(attacker, defender){
 playerMobile.giveGold = function(min, max, bonus){
   if (min > max){max = min;}
   var gold = util.getRandomNum(min, max);
-  if(gold < 1 || gold === NaN){gold = 1;}
-  if(bonus < 0 || bonus === NaN){bonus = 0;}
-  gold *= bonus;
-  this.gold += gold;
+  gold *= util.checkNaN(bonus);
+  this.gold += util.checkNaN(gold);
   util.printToGameWindow(playerMobile.stringName +' has found ' + gold + ' gold','loot');
 };
 
 playerMobile.giveLoot = function(attacker, defender, lootLevel){
+  lootLevel = util.checkNaN(lootLevel);
   playerMobile.giveGold(attacker.level,(attacker.level * 10), lootLevel);
   if (util.getRandomNum(attacker.level, 100) > util.getRandomNum(defender.level, 100)){
-      // console.log('random loot chance failed');
     playerMobile.updateStats();
     return;
   }
   if(lootLevel < 5){
-    for (var i = util.getRandomNum(0, lootPackBasic.length - 1); i < lootPackBasic.length; i++){
-      util.printToGameWindow(attacker.stringName +' has found ' + lootPackBasic[i].stringName,'loot');
-      playerMobile.inventory.push(lootPackBasic[i]);
-      playerMobile.updateStats();
-      return;
-    };
+    // TODO refactor with out for loop
+    var i = util.getRandomNum(0, lootPackBasic.length - 1);
+    util.printToGameWindow(attacker.stringName +' has found ' + lootPackBasic[i].stringName,'loot');
+    playerMobile.inventory.push(lootPackBasic[i]);
+    playerMobile.updateStats();
+    return;
   }
 };

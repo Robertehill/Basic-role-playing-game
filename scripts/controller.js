@@ -1,4 +1,13 @@
 var controller =  {};
+controller.equipButtonHandler = function(e) {
+  if (e.target !== e.currentTarget) {
+    var clickedItem = e.target.id;
+    clickedItem = clickedItem.replace('EquipBut','');
+    // console.log(clickedItem);
+    playerMobile.equip(e, clickedItem);
+  }
+  e.stopPropagation();
+};
 
 //not sure this should be here
 controller.saveChar = function (stringName, data){
@@ -43,3 +52,9 @@ controller.loadChar = function(stringName){
     playerMobile.updateStats();
   }
 };
+// start eventHandlers on doc ready
+$(function() {
+  // left hand has some unquie rules and can't be grouped with the rest of the equipment easily
+  $('#leftHandEquipBut').on('click', playerMobile.equipL);
+  $('#statTable').on('click', controller.equipButtonHandler);
+});

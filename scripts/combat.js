@@ -164,8 +164,8 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
       if (damage < 1){
         damage = 1;
       }
-      if (damage < defender.hitPoints){
-        defender.hitPoints -= damage;
+      if (damage < defender.hits){
+        defender.hits -= damage;
         attacker.stam -= stamLoss;
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName + ' for '+ damage +' damage','negitive');
         playerMobile.updateStats();
@@ -174,7 +174,7 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName + ' for '+ damage +' damage','negitive');
         playerMobile.updateStats();
         attacker.stam -= stamLoss;
-        defender.hitPoints = 0;
+        defender.hits = 0;
         playerMobile.death(attacker);
         combat.endCombat();
       }
@@ -247,15 +247,15 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
       util.printToGameWindow(attacker.stringName + ' does not have enough stamina to swing thier weapon', 'negitive');
       return;
     }
-    if(combat.hitChance(attacker, defender, hitBonus) && defender.hitPoints > 0){
-      if (damage < defender.hitPoints ){
-        defender.hitPoints -= damage;
+    if(combat.hitChance(attacker, defender, hitBonus) && defender.hits > 0){
+      if (damage < defender.hits ){
+        defender.hits -= damage;
         attacker.stam -= stamLoss;
         playerMobile.updateStats();
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage +' damage','positive');
       }
       else{
-        defender.hitPoints = 0;
+        defender.hits = 0;
         attacker.stam -= stamLoss;
         playerMobile.updateStats();
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage +' damage','positive');
@@ -264,16 +264,16 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
     else{
       util.printToGameWindow(attacker.stringName +' misses '+ defender.stringName);
     }
-    if(duelWeild === true && defender.hitPoints > 0 && (attacker.stam - stamLoss) >= 0){
+    if(duelWeild === true && defender.hits > 0 && (attacker.stam - stamLoss) >= 0){
       if(combat.hitChance(attacker, defender, hitBonus)){
-        if (damage2 < defender.hitPoints){
-          defender.hitPoints -= damage2;
+        if (damage2 < defender.hits){
+          defender.hits -= damage2;
           attacker.stam -= stamLoss;
           playerMobile.updateStats();
           util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage2 +' damage','positive');
         }
         else{
-          defender.hitPoints = 0;
+          defender.hits = 0;
           attacker.stam -= stamLoss;
           playerMobile.updateStats();
           util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage2 +' damage','positive');
@@ -286,11 +286,11 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
   }
 };
 playerMobile.combat = function(opponent){
-  playerMobile.combatant = new Monster(opponent.stringName, opponent.level, opponent.hitPoints, opponent.mana, opponent.stam, opponent.str, opponent.wis, opponent.dex, opponent.armor, opponent.magicResist, opponent.minDmg, opponent.maxDmg);
+  playerMobile.combatant = new Monster(opponent.stringName, opponent.level, opponent.hits, opponent.mana, opponent.stam, opponent.str, opponent.wis, opponent.dex, opponent.armor, opponent.magicResist, opponent.minDmg, opponent.maxDmg);
   playerMobile.updateStats();
   view.startCombat();
 
-  if (this.hitPoints > 0){
+  if (this.hits > 0){
     util.printToGameWindow('You are fighting ' + opponent.stringName, 'negitive');
     view.makeWepAbList();
     if (this.charClass ==='Wizard'){

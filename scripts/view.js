@@ -9,25 +9,19 @@ view.endCombat = function() {
     $('#cast').remove();
   }
 };
-view.startCombat = function(argument) {
+view.startCombat = function() {
   $('#usePassAb').remove();
   $('#usePassAbBut').remove();
   $('#opponentStats').fadeIn();
 };
 view.removeEqupFromHtml = function() {
-  $('#rightHandList').remove();
-  $('#leftHandList').remove();
-  $('#headList').remove();
-  $('#chestList').remove();
-  $('#armsList').remove();
-  $('#glovesList').remove();
-  $('#legsList').remove();
-  $('#bootsList').remove();
+  playerMobile.armorSlots.forEach(function(element,index,array) {
+    $('#'+element+'List').remove();
+  });
 };
 
 view.playerEqiupToHtml = function() {
-  var tempEquipArray = ['rightHand','leftHand','head','chest','arms','gloves','legs','boots'];
-  tempEquipArray.forEach(function(element,index,array) {
+  playerMobile.armorSlots.forEach(function(element,index,array) {
     if (playerMobile[element] != null){
       $('#'+element).html(playerMobile[element].stringName);
     }
@@ -37,32 +31,23 @@ view.playerEqiupToHtml = function() {
   });
   $('#statWindow').attr('style','display:inline');
 };
+
 view.playerStatsToHtml = function() {
-  $('#nameTable').html(playerMobile.stringName);
-  $('#classTable').html(playerMobile.charClass);
+  var tempArray = ['stringName','charClass','hits','mana','stam','str','dex','dex','wis','armor','magicResist'];
+  tempArray.forEach(function(element,index,array) {
+    $('#'+element+'Table').html(playerMobile[element]);
+  });
   $('#levelTable').html('Level = ' + playerMobile.level +' Exp = ' + playerMobile.exp + ' Gold = ' + playerMobile.gold);
-  $('#hitsTable').html(playerMobile.hitPoints);
-  $('#manaTable').html(playerMobile.mana);
-  $('#stamTable').html(playerMobile.stam);
-  $('#strTable').html(playerMobile.str);
-  $('#dexTable').html(playerMobile.dex);
-  $('#wisTable').html(playerMobile.wis);
-  $('#armorTable').html(playerMobile.armor);
-  $('#magicResist').html(playerMobile.magicResist);
 };
+
 view.addOpponentStatsToHtml = function() {
-  $('#opponentnameTable').html(playerMobile.combatant.stringName);
-// $('opponentclassTable').html(playerMobile.combatant.charClass);
+  var tempArray = ['stringName','charClass','hits','mana','stam','str','dex','dex','wis','armor','magicResist'];
+  tempArray.forEach(function(element,index,array) {
+    $('#opponent'+element+'Table').html(playerMobile.combatant[element]);
+  });
   $('#opponentlevelTable').html('Level = ' + playerMobile.combatant.level);
-  $('#opponenthitsTable').html(playerMobile.combatant.hitPoints);
-  $('#opponentmanaTable').html(playerMobile.combatant.mana);
-  $('#opponentstamTable').html(playerMobile.combatant.stam);
-  $('#opponentstrTable').html(playerMobile.combatant.str);
-  $('#opponentdexTable').html(playerMobile.combatant.dex);
-  $('#opponentwisTable').html(playerMobile.combatant.wis);
-  $('#opponentarmorTable').html(playerMobile.combatant.armor);
-  $('#opponentmagicResist').html(playerMobile.combatant.magicResist);
 };
+
 view.makeWepAbList = function() {
   var $parent = $('#aggrActions');
   var $action = $('<select>').attr('id', 'useWepAb');
@@ -76,6 +61,7 @@ view.makeWepAbList = function() {
   $parent.append($wepAbBut);
   $('#useWepAbBut').on('click', combat.useWepAb);
 };
+
 view.makeSpellList = function() {
   var $parent = $('#aggrActions');
   var $action2 = $('<select>').attr('id','spells');
@@ -90,6 +76,7 @@ view.makeSpellList = function() {
   $parent.append($castBut);
   $('#cast').on('click', combat.castSpell);
 };
+
 view.makeEquipList = function(bodyLoc){
   var $parent = $('#'+bodyLoc+'Equip');
   var $equipList = $('<select>').attr('id', bodyLoc+'List');

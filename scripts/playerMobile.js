@@ -5,7 +5,7 @@ var playerMobile = {
   expToLvl: 100,
   stringName: null, // set to null for debugging
   charClass: null,// set to null for debugging
-  hitPoints: 0,
+  hits: 0,
   mana: 0,
   stam: 0,
   str: 0,
@@ -28,11 +28,12 @@ var playerMobile = {
   knownSpells: [],
   knownWepAbs: [],
   passiveAbs: [],
+  armorSlots: ['rightHand','leftHand','head','chest','arms','gloves','legs','boots'],
   combatant: null
 };
 // var playerMobile.combatant = null;
 playerMobile.death = function(opponent){
-  playerMobile.hitPoints = 1;
+  playerMobile.hits = 1;
   var exp = util.getRandomNum((opponent.level * 10), (opponent.level * 20));
   if(playerMobile.exp - exp < 0){
     playerMobile.exp - 0;

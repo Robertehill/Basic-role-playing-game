@@ -26,7 +26,7 @@ controller.loadChar = function(stringName){
     playerMobile.expToLvl = parseChar.expToLvl;
     playerMobile.stringName = parseChar.stringName;
     playerMobile.charClass = parseChar.charClass;
-    playerMobile.hitPoints = parseChar.hitPoints;
+    playerMobile.hits = parseChar.hits;
     playerMobile.mana = parseChar.mana;
     playerMobile.stam = parseChar.stam;
     playerMobile.str = parseChar.str;
@@ -54,6 +54,7 @@ controller.loadChar = function(stringName){
 };
 // start eventHandlers on doc ready
 $(function() {
+  $('#createCharButton').on('click', playerMobile.createChar);
   // left hand has some unquie rules and can't be grouped with the rest of the equipment easily
   $('#leftHandEquipBut').on('click', playerMobile.equipL);
   $('#statTable').on('click', controller.equipButtonHandler);

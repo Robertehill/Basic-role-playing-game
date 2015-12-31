@@ -21,11 +21,11 @@ function doMove(){
 function doPassRest(self){
   util.printToGameWindow(self.stringName + ' is resting.');
   // randomCombat(playerMobile.level, 10);
-  if (self.hitPoints < self.str){
-    if (self.hitPoints + (Math.floor(self.str / 5)) >= self.str){
-      self.hitPoints = self.str;
+  if (self.hits < self.str){
+    if (self.hits + (Math.floor(self.str / 5)) >= self.str){
+      self.hits = self.str;
     }else{
-      self.hitPoints += Math.floor(self.str / 5);
+      self.hits += Math.floor(self.str / 5);
     }
   }
   if (self.mana < self.wis){
@@ -46,11 +46,11 @@ function doPassRest(self){
 }
 function doCombatRest(self, opponent){
   util.printToGameWindow(self.stringName + ' is resting.');
-  if (self.hitPoints < self.str){
-    if (self.hitPoints + (Math.floor(self.str / 10)) >= self.str){
-      self.hitPoints = self.str;
+  if (self.hits < self.str){
+    if (self.hits + (Math.floor(self.str / 10)) >= self.str){
+      self.hits = self.str;
     }else{
-      self.hitPoints += Math.floor(self.str / 10);
+      self.hits += Math.floor(self.str / 10);
     }
   }
   if (self.mana < self.wis){
@@ -142,14 +142,14 @@ doubleStrike.use = function(attacker, defender){
     // console.log('doubleStrike works');
     combat.doMeleeAttack(attacker, defender, 0, 0);
     setTimeout(function(){
-      if(defender !=null && defender.hitPoints > 0){
+      if(defender !=null && defender.hits > 0){
         combat.doMeleeAttack(attacker, defender, -10, 0);
         if (defender != null){
           defender.combat(attacker);
         }
       }
     }, 300);
-    if (defender != null && defender.hitPoints <= 0){
+    if (defender != null && defender.hits <= 0){
       defender.combat(attacker);
     }
   }
@@ -194,7 +194,7 @@ poison.use = function(attacker, defender, level, count){
           // console.log('poison works');
           util.printToGameWindow(attacker.stringName +' has hit '+ defender.stringName +' for '+wepDmg+' damage and poisoned them','positive');
 
-          defender.hitPoints -= wepDmg;
+          defender.hits -= wepDmg;
           defender.poisoned = true;
           defender.poisonCount = count;
           defender.poisonLevel = level;

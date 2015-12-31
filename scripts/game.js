@@ -1,3 +1,4 @@
+// TODO make combat turn based and with teams
 var game = {
   // turn: 0,
  // ticks: ,

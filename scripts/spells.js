@@ -55,12 +55,12 @@ Spell.prototype.castHeal = function(caster, target, hitBonus){
   }
   if (this.spellCastChance(caster, hitBonus)){
     var healAmt = util.getRandomNum(this.minDmg, this.maxDmg);
-    if(target.hitPoints + healAmt < target.str){
-      target.hitPoints += healAmt;
+    if(target.hits + healAmt < target.str){
+      target.hits += healAmt;
       util.printToGameWindow(caster.stringName+' has healed ' + target.stringName + ' for '+ healAmt, 'positive');
     }
     else{
-      target.hitPoints = target.str;
+      target.hits = target.str;
       util.printToGameWindow(caster.stringName+' has healed ' + target.stringName + ' for '+ healAmt, 'positive');
     }
   }
@@ -89,8 +89,8 @@ Spell.prototype.castDmg = function(attacker, defender, hitBonus){
         damage = 1;
       };
       util.printToGameWindow(attacker.stringName +' hits '+ defender.stringName+ ' with a ' + this.stringName + ' for '+damage+' damage','positive');
-      defender.hitPoints -= damage;
-      if(defender.hitPoints <= 0){
+      defender.hits -= damage;
+      if(defender.hits <= 0){
         playerMobile.giveExp(attacker, defender);
         playerMobile.giveLoot(attacker, defender, defender.level);
         combat.endCombat();

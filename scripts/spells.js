@@ -5,6 +5,7 @@ function Spell(stringName, level,manaCost, minDmg, maxDmg){
   this.minDmg = minDmg;
   this.maxDmg = maxDmg;
 }
+
 Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
   var wisChance = ((attacker.wis - defender.wis) + 100) - 50;
   if(hitBonus < 0 || hitBonus === NaN){

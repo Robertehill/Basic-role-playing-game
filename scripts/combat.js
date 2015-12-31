@@ -246,7 +246,7 @@ playerMobile.combat = function(opponent){
     switch(spellChoice.stringName){
 
     case 'Fire Ball':
-      console.log('casting fireBall');
+      // console.log('casting fireBall');
       fireBallSpell.castDmg(playerMobile, playerMobile.combatant, 0);
       if (playerMobile.combatant != null){
         playerMobile.combatant.combat(playerMobile);

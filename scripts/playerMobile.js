@@ -148,7 +148,7 @@ playerMobile.makeWepList = function(argument) {
     }
   };
   if(playerMobile.charClass === 'Rogue'){
-    var $wepListL = $('<select>').attr('id','wepListL');
+    var $wepListL = $('<select>').attr('id','leftHandList');
     var $opt1 = $('<option>').html('None').val('None');
     $parentL.append($wepListL);
     $wepListL.append($opt1);
@@ -161,7 +161,7 @@ playerMobile.makeWepList = function(argument) {
     };
   }
   else if(playerMobile.charClass === 'Warrior'){
-    var $wepListL = $('<select>').attr('id', 'wepListL');
+    var $wepListL = $('<select>').attr('id', 'leftHandList');
     var $opt1 = $('<option>').html('None').val('None');
     $parentL.append($wepListL);
     $wepListL.append($opt1);
@@ -200,46 +200,6 @@ playerMobile.updateStats = function(){
   playerMobile.makeEquipList('boots');
   playerMobile.makeWepList();
 };
-
-// playerMobile.equipR = function(e){
-//   e.preventDefault();
-//   // console.log('equip right function');
-//   var currentWep = playerMobile.rightHand;
-//   var leftHandWep = playerMobile.leftHand;
-//
-//   var newWep = document.getElementById('wepListR').value;
-//   if(newWep === 'None'){
-//     // console.log('None choosen for Right hand');
-//     if(currentWep != null){
-//       playerMobile.inventory.push(currentWep);
-//     }
-//     playerMobile.rightHand = null;
-//     playerMobile.updateStats();
-//     return;
-//   }
-//   else if(newWep != null){
-//     for (var i = 0; i < playerMobile.inventory.length; i++) {
-//       if(newWep === playerMobile.inventory[i].stringName){
-//         if(currentWep != null){
-//           playerMobile.inventory.push(currentWep);
-//         }
-//         newWep = playerMobile.inventory[i];
-//         playerMobile.inventory.splice( i, 1);
-//         playerMobile.rightHand = newWep;
-//         if (newWep.numHands > 1 && leftHandWep != null){
-//           playerMobile.inventory.push(leftHandWep);
-//           playerMobile.leftHand = null;
-//         }
-//         playerMobile.updateStats();
-//         return;
-//       }
-//     };
-//   }
-//   else
-//   {
-//     playerMobile.rightHand = null;
-//   }
-// };
 
 playerMobile.equipL = function(e){
   e.preventDefault();

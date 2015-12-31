@@ -87,13 +87,12 @@ playerMobile.getAR = function(){
   }
   if(playerMobile.lHand != null){
     if(playerMobile.lHand.wepType === 'shield'){
-
       armorRating += playerMobile.lHand.armor;
     }
   }
   return armorRating;
-
 };
+
 playerMobile.passiveActs = function(){
   var parent = document.getElementById('passActions');
   var usePassAb = function(e){
@@ -146,7 +145,6 @@ playerMobile.passiveActs = function(){
   passAbBut.id = 'usePassAbBut';
   passAbBut.innerHTML = 'Use Ability';
   parent.appendChild(passAbBut);
-
   var passAbButton = document.getElementById('usePassAbBut');
   passAbButton.addEventListener('click', usePassAb);
 
@@ -165,11 +163,10 @@ playerMobile.levelUp = function(){
   playerMobile.wis += Math.floor(playerMobile.wis / 10);
   playerMobile.dex += Math.floor(playerMobile.dex / 10);
 };
+
 playerMobile.makeEquipList = function(bodyLoc){
   var $parent = $('#'+bodyLoc+'Equip');
-
   var $equipList = $('<select>').attr('id', bodyLoc+'List');
-
   $parent.append($equipList.append($('<option>').html('None').val('None')));
   for (var i = 0; i < playerMobile.inventory.length; i++){
     var $opt = $('<option>');
@@ -179,6 +176,7 @@ playerMobile.makeEquipList = function(bodyLoc){
     }
   };
 };
+
 playerMobile.makeWepList = function(argument) {
   var $parentR = $('#rightHandEquip');
   var $parentL = $('#leftHandEquip');
@@ -220,6 +218,7 @@ playerMobile.makeWepList = function(argument) {
     };
   }
 };
+
 playerMobile.updateStats = function(){
   playerMobile.armor = playerMobile.getAR();
   playerMobile.magicResist = playerMobile.getMR();
@@ -241,8 +240,8 @@ playerMobile.updateStats = function(){
   playerMobile.makeEquipList('legs');
   playerMobile.makeEquipList('boots');
   playerMobile.makeWepList();
-  // makeEquipList('leftHand');
 };
+
 playerMobile.equipR = function(e){
   e.preventDefault();
   // console.log('equip right function');
@@ -282,8 +281,6 @@ playerMobile.equipR = function(e){
     playerMobile.rHand = null;
   }
 };
-var rightHandEquipBut = document.getElementById('rightHandEquipBut');
-rightHandEquipBut.addEventListener('click', playerMobile.equipR);
 
 playerMobile.equipL = function(e){
   e.preventDefault();
@@ -338,20 +335,16 @@ playerMobile.equipL = function(e){
   }
 };
 
-var leftHandEquipBut = document.getElementById('leftHandEquipBut');
-leftHandEquipBut.addEventListener('click', playerMobile.equipL);
-
-playerMobile.equipHead = function(e){
-  e.preventDefault();
-  // console.log('equip head function');
-  var currentArmor = playerMobile.head;
-  var newArmor = document.getElementById('headList').value;
+playerMobile.equip = function(event, bodyLoc) {
+  console.log(playerMobile[bodyLoc]);
+  event.preventDefault();
+  var currentArmor = playerMobile[bodyLoc];
+  var newArmor = $('#'+bodyLoc+'List').val();
   if(newArmor === 'None'){
-    // console.log('None choosen for head');
     if(currentArmor != null){
       playerMobile.inventory.push(currentArmor);
     }
-    playerMobile.head = null;
+    playerMobile[bodyLoc] = null;
     playerMobile.updateStats();
     return;
   }
@@ -364,228 +357,72 @@ playerMobile.equipHead = function(e){
         }
         newArmor = playerMobile.inventory[i];
         playerMobile.inventory.splice( i, 1);
-        playerMobile.head = newArmor;
+        playerMobile[bodyLoc] = newArmor;
         playerMobile.updateStats();
         return;
       }
     };
   }
   else{
-    playerMobile.head = null;
+    playerMobile.bodyLoc = null;
   }
 };
-
-var headEquipBut = document.getElementById('headEquipBut');
-headEquipBut.addEventListener('click', playerMobile.equipHead);
-
-playerMobile.equipChest = function(e){
-  e.preventDefault();
-  // console.log('equip chest function');
-  var currentArmor = playerMobile.chest;
-  var newArmor = document.getElementById('chestList').value;
-  if(newArmor === 'None'){
-    // console.log('None choosen for chest');
-    if(currentArmor != null){
-      playerMobile.inventory.push(currentArmor);
-    }
-    playerMobile.chest = null;
-    playerMobile.updateStats();
-    return;
-  }
-  else if(newArmor != null){
-    for (var i = 0; i < playerMobile.inventory.length; i++) {
-      if(newArmor === playerMobile.inventory[i].stringName){
-        if(currentArmor != null){
-          playerMobile.inventory.push(currentArmor);
-        }
-
-
-        newArmor = playerMobile.inventory[i];
-        playerMobile.inventory.splice( i, 1);
-
-        playerMobile.chest = newArmor;
-        playerMobile.updateStats();
-        return;
-      }
-    };
-
-  }
-  else{
-    playerMobile.chest = null;
-  }
-};
-
-var chestEquipBut = document.getElementById('chestEquipBut');
-chestEquipBut.addEventListener('click', playerMobile.equipChest);
-
-playerMobile.equipArms = function(e){
-  e.preventDefault();
-  // console.log('equip arms function');
-  var currentArmor = playerMobile.arms;
-  var newArmor = document.getElementById('armsList').value;
-  if(newArmor === 'None'){
-    // console.log('None choosen for arms');
-    if(currentArmor != null){
-      playerMobile.inventory.push(currentArmor);
-    }
-    playerMobile.arms = null;
-    playerMobile.playerMobile.updateStats();
-    return;
-  }
-  else if(newArmor != null){
-    for (var i = 0; i < playerMobile.inventory.length; i++){
-      if(newArmor === playerMobile.inventory[i].stringName){
-        if(currentArmor != null){
-          playerMobile.inventory.push(currentArmor);
-        }
-        newArmor = playerMobile.inventory[i];
-        playerMobile.inventory.splice( i, 1);
-        playerMobile.arms = newArmor;
-        playerMobile.updateStats();
-        return;
-      }
-    };
-  }
-  else{
-    playerMobile.arms = null;
-  }
-};
-
-var armsEquipBut = document.getElementById('armsEquipBut');
-armsEquipBut.addEventListener('click', playerMobile.equipArms);
-playerMobile.equipGloves = function(e){
-  e.preventDefault();
-  // console.log('equip gloves function');
-  var currentArmor = playerMobile.gloves;
-  var newArmor = document.getElementById('glovesList').value;
-  if(newArmor === 'None'){
-    // console.log('None choosen for gloves');
-    if(currentArmor != null){
-      playerMobile.inventory.push(currentArmor);
-    }
-    playerMobile.gloves = null;
-    playerMobile.updateStats();
-    return;
-  }
-  else if(newArmor != null){
-    for (var i = 0; i < playerMobile.inventory.length; i++) {
-      if(newArmor === playerMobile.inventory[i].stringName){
-        if(currentArmor != null){
-          playerMobile.inventory.push(currentArmor);
-        }
-        newArmor = playerMobile.inventory[i];
-        playerMobile.inventory.splice( i, 1);
-        playerMobile.gloves = newArmor;
-        playerMobile.updateStats();
-        return;
-      }
-    };
-  }
-  else{
-    playerMobile.gloves = null;
-  }
-};
-
-var glovesEquipBut = document.getElementById('glovesEquipBut');
-glovesEquipBut.addEventListener('click', playerMobile.equipGloves);
-
-playerMobile.equipLegs = function(e){
-  e.preventDefault();
-  // console.log('equip legs function');
-  var currentArmor = playerMobile.legs;
-  var newArmor = document.getElementById('legsList').value;
-  if(newArmor === 'None'){
-    // console.log('None choosen for legs');
-    if(currentArmor != null){
-      playerMobile.inventory.push(currentArmor);
-    }
-    playerMobile.legs = null;
-    playerMobile.updateStats();
-    return;
-  }
-  else if(newArmor != null){
-    for (var i = 0; i < playerMobile.inventory.length; i++) {
-      if(newArmor === playerMobile.inventory[i].stringName){
-        if(currentArmor != null){
-          playerMobile.inventory.push(currentArmor);
-        }
-        newArmor = playerMobile.inventory[i];
-        playerMobile.inventory.splice( i, 1);
-        playerMobile.legs = newArmor;
-        playerMobile.updateStats();
-        return;
-      }
-    };
-  }
-  else{
-    playerMobile.legs = null;
-  }
-};
-
-var legsEquipBut = document.getElementById('legsEquipBut');
-legsEquipBut.addEventListener('click', playerMobile.equipLegs);
-
-playerMobile.equipBoots = function(e){
-  e.preventDefault();
-  // console.log('equip boots function');
-  var currentArmor = playerMobile.boots;
-  var newArmor = document.getElementById('bootsList').value;
-  if(newArmor === 'None'){
-    // console.log('None choosen for boots');
-    if(currentArmor != null){
-      playerMobile.inventory.push(currentArmor);
-    }
-    playerMobile.boots = null;
-    playerMobile.updateStats();
-    return;
-  }
-  else if(newArmor != null){
-    for (var i = 0; i < playerMobile.inventory.length; i++) {
-      if(newArmor === playerMobile.inventory[i].stringName){
-        if(currentArmor != null){
-          playerMobile.inventory.push(currentArmor);
-        }
-        newArmor = playerMobile.inventory[i];
-        playerMobile.inventory.splice( i, 1);
-        playerMobile.boots = newArmor;
-        playerMobile.updateStats();
-        return;
-      }
-    };
-  }
-  else{
-    playerMobile.boots = null;
-  }
-};
-
-var bootsEquipBut = document.getElementById('bootsEquipBut');
-bootsEquipBut.addEventListener('click', playerMobile.equipBoots);
+$('#rightHandEquipBut').on('click', playerMobile.equipR);
+$('#leftHandEquipBut').on('click', playerMobile.equipL);
+// plan to make this one event handler
+$('#headEquipBut').on('click', function(e){
+  console.log('headEquipBut clicked');
+  playerMobile.equip(e,'head');
+});
+$('#chestEquipBut').on('click', function(e){
+  console.log('chestEquipBut clicked');
+  playerMobile.equip(e,'head');
+});
+$('#chestEquipBut').on('click', function(e){
+  console.log('chestEquipBut clicked');
+  playerMobile.equip(e,'chest');
+});
+$('#armsEquipBut').on('click', function(e){
+  console.log('chestEquipBut clicked');
+  playerMobile.equip(e,'arms');
+});
+$('#glovesEquipBut').on('click', function(e){
+  console.log('glovesEquipBut clicked');
+  playerMobile.equip(e,'gloves');
+});
+$('#legsEquipBut').on('click', function(e){
+  console.log('legsEquipBut clicked');
+  playerMobile.equip(e,'legs');
+});
+$('#bootsEquipBut').on('click', function(e){
+  console.log('bootsEquipBut clicked');
+  playerMobile.equip(e,'boots');
+});
 
 playerMobile.giveExp = function(attacker, defender){
   var exp = util.getRandomNum((defender.level * 10), (defender.level * 20));
-
   attacker.exp += exp;
   util.printToGameWindow(attacker.stringName +' has gained ' + exp + ' experience','exp');
-
 };
+
+playerMobile.giveGold = function(min, max, bonus){
+  if (min > max){max = min;}
+  var gold = util.getRandomNum(min, max);
+  if(gold < 1 || gold === NaN){gold = 1;}
+  if(bonus < 0 || bonus === NaN){bonus = 0;}
+  gold *= bonus;
+  this.gold += gold;
+  util.printToGameWindow(playerMobile.stringName +' has found ' + gold + ' gold','loot');
+};
+
 playerMobile.giveLoot = function(attacker, defender, lootLevel){
-  var gold = util.getRandomNum((defender.level), (defender.level * 10));
-  if (lootLevel < 0 || lootLevel === NaN){
-    lootLevel = 0;
-  }
-  if(gold < 1){
-    gold = 1;
-  }
-  gold *= lootLevel;
-  attacker.gold += gold;
-  util.printToGameWindow(attacker.stringName +' has found ' + gold + ' gold','loot');
+  playerMobile.giveGold(attacker.level,(attacker.level * 10), lootLevel);
   if (util.getRandomNum(attacker.level, 100) > util.getRandomNum(defender.level, 100)){
       // console.log('random loot chance failed');
     playerMobile.updateStats();
     return;
   }
   if(lootLevel < 5){
-
     for (var i = util.getRandomNum(0, lootPackBasic.length - 1); i < lootPackBasic.length; i++){
       util.printToGameWindow(attacker.stringName +' has found ' + lootPackBasic[i].stringName,'loot');
       playerMobile.inventory.push(lootPackBasic[i]);

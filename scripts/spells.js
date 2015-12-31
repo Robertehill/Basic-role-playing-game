@@ -64,7 +64,6 @@ Spell.prototype.castHeal = function(caster, target, hitBonus){
     else{
       target.hitPoints = target.str;
       util.printToGameWindow(caster.stringName+' has healed ' + target.stringName + ' for '+ healAmt, 'positive');
-
     }
   }
   playerMobile.updateStats();

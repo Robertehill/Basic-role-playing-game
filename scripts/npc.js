@@ -43,6 +43,7 @@ Monster.prototype.death = function(killer){
 };
 Monster.prototype.combat = function(opponent){
   if(this.poisoned && this.hitPoints > 0){
+    // move to a doPoisonDmg function
     var poisonDmg = Math.floor(this.hitPoints / (this.poisonLevel * 10) + 1);
     if (poisonDmg <= 1){
       poisonDmg = 1;
@@ -70,6 +71,7 @@ Monster.prototype.combat = function(opponent){
       util.printToGameWindow(this.stringName + ' is no longer poisoned', 'negitive');
     }
   }
+  // move to doStun function later
   if(this.stunned){
     util.printToGameWindow(this.stringName + ' is stunned','stun');
     if (this.stunCount - 1 <= 0){
@@ -88,7 +90,7 @@ Monster.prototype.combat = function(opponent){
   if (this.stunned){
     return;
   }
-  //start of AI combat
+  //start of AI combat //move to it's own function 
   if (util.getRandomNum(0, 100) < 25 && this.stam < Math.floor(this.dex / 2) || this.hitPoints < Math.floor(this.str / 2) || this.mana < Math.floor(this.wis / 2) ){
     doCombatRest(this, opponent);
     return;

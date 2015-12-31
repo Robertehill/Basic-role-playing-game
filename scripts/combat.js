@@ -338,7 +338,6 @@ playerMobile.combat = function(opponent){
       var $castBut = $('<button>').attr('id', 'cast').html('Cast Spell');
       $parent.append($castBut);
       $('#cast').on('click', castSpell);
-
     }
   }
   else{

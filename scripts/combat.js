@@ -6,12 +6,9 @@ combat.endCombat = function(){
 
 combat.hitChance = function(attacker, defender, hitBonus){
   var dexChance = ((attacker.dex - defender.dex) + 100 ) - 50;
-  if(dexChance <= 0 || dexChance === NaN ) {
-    dexChance = 0;
-  };
-  if(hitBonus <= 0 || hitBonus === NaN){
-    hitBonus = 0;
-  }
+  dexChance = util.checkNaN(dexChance);
+  hitBonus = util.checkNaN(hitBonus);
+
   dexChance += hitBonus;
   if(dexChance < 1){
     dexChance = 1;
@@ -46,12 +43,8 @@ combat.randomCombat = function(level, chance){
 };
 combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
   var stamLoss = 0;
-  if (hitBonus < 0 || hitBonus === NaN) {
-    hitBonus = 0;
-  };
-  if (dmgBonus < 0 || dmgBonus === NaN) {
-    dmgBonus = 0;
-  };
+  hitBonus = util.checkNaN(hitBonus);
+  dmgBonus = util.checkNaN(dmgBonus);
   if(attacker.stam === 0){
     util.printToGameWindow(attacker.stringName + ' does not have enough stamina to swing thier weapon', 'negitive');
     return;
@@ -80,9 +73,7 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
         damage += Math.floor(attacker.str / 10);
       }
       var reducedDamage = Math.floor(damage * (defender.armor / 100));
-      if (reducedDamage < 0){
-        reducedDamage = 0;
-      }
+      reducedDamage = util.checkNaN(reducedDamage);
       damage -= reducedDamage;
       damage = Math.floor(damage);
       if (damage < 1){

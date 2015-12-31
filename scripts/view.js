@@ -1,5 +1,14 @@
 var view = {};
-
+view.endCombat = function() {
+  $('#useWepAb').remove();
+  $('#useWepAbBut').remove();
+  $('#opponentStats').hide();
+  playerMobile.combatant = null;
+  if(playerMobile.charClass === 'Wizard'){
+    $('#spells').remove();
+    $('#cast').remove();
+  }
+};
 view.removeEqupFromHtml = function() {
   $('#rightHandList').remove();
   $('#leftHandList').remove();

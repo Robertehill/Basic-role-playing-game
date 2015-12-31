@@ -1,13 +1,6 @@
 var combat = {};
 combat.endCombat = function(){
-  $('#useWepAb').remove();
-  $('#useWepAbBut').remove();
-  $('#opponentStats').hide();
-  playerMobile.combatant = null;
-  if(playerMobile.charClass === 'Wizard'){
-    $('#spells').remove();
-    $('#cast').remove();
-  }
+  view.endCombat();
   playerMobile.passiveActs();
 };
 

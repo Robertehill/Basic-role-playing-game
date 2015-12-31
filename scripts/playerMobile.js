@@ -14,8 +14,8 @@ var playerMobile = {
   magicResist: 0,
   minDmg: 1,
   maxDmg: 3,
-  rHand: null,
-  lHand: null,
+  rightHand: null,
+  leftHand: null,
   head: null,
   chest: null,
   arms: null,
@@ -44,53 +44,23 @@ playerMobile.death = function(opponent){
 };
 
 playerMobile.getMR = function(){
+  var tempArmorArray = ['head','chest','arms','gloves','legs','boots'];
   var magicDef = 0;
-  if(playerMobile.head != null){
-    magicDef += playerMobile.head.magicDef;
-  }
-  if(playerMobile.chest != null){
-    magicDef += playerMobile.chest.magicDef;
-  }
-  if(playerMobile.arms != null){
-    magicDef += playerMobile.arms.magicDef;
-  }
-  if(playerMobile.gloves != null){
-    magicDef += playerMobile.gloves.magicDef;
-  }
-  if(playerMobile.legs != null){
-    magicDef += playerMobile.legs.magicDef;
-  }
-  if(playerMobile.boots != null){
-    magicDef += playerMobile.boots.magicDef;
-  }
+  tempArmorArray.forEach(function (element,index,array) {
+    if(playerMobile[element]!= null){
+      magicDef += playerMobile[element].magicDef;
+    }
+  });
   return magicDef;
-
 };
 playerMobile.getAR = function(){
   var armorRating = 0;
-  if(playerMobile.head != null){
-    armorRating += playerMobile.head.rating;
-  }
-  if(playerMobile.chest != null){
-    armorRating += playerMobile.chest.rating;
-  }
-  if(playerMobile.arms != null){
-    armorRating += playerMobile.arms.rating;
-  }
-  if(playerMobile.gloves != null){
-    armorRating += playerMobile.gloves.rating;
-  }
-  if(playerMobile.legs != null){
-    armorRating += playerMobile.legs.rating;
-  }
-  if(playerMobile.boots != null){
-    armorRating += playerMobile.boots.rating;
-  }
-  if(playerMobile.lHand != null){
-    if(playerMobile.lHand.wepType === 'shield'){
-      armorRating += playerMobile.lHand.armor;
+  var tempArmorArray = ['head','chest','arms','gloves','legs','boots'];
+  tempArmorArray.forEach(function (element,index,array) {
+    if(playerMobile[element] != null){
+      armorRating += playerMobile[element].rating;
     }
-  }
+  });
   return armorRating;
 };
 
@@ -235,8 +205,8 @@ playerMobile.updateStats = function(){
 playerMobile.equipR = function(e){
   e.preventDefault();
   // console.log('equip right function');
-  var currentWep = playerMobile.rHand;
-  var leftHandWep = playerMobile.lHand;
+  var currentWep = playerMobile.rightHand;
+  var leftHandWep = playerMobile.leftHand;
 
   var newWep = document.getElementById('wepListR').value;
   if(newWep === 'None'){
@@ -244,8 +214,8 @@ playerMobile.equipR = function(e){
     if(currentWep != null){
       playerMobile.inventory.push(currentWep);
     }
-    playerMobile.rHand = null;
-    updateStats();
+    playerMobile.rightHand = null;
+    playerMobile.updateStats();
     return;
   }
   else if(newWep != null){
@@ -256,10 +226,10 @@ playerMobile.equipR = function(e){
         }
         newWep = playerMobile.inventory[i];
         playerMobile.inventory.splice( i, 1);
-        playerMobile.rHand = newWep;
+        playerMobile.rightHand = newWep;
         if (newWep.numHands > 1 && leftHandWep != null){
           playerMobile.inventory.push(leftHandWep);
-          playerMobile.lHand = null;
+          playerMobile.leftHand = null;
         }
         playerMobile.updateStats();
         return;
@@ -268,22 +238,22 @@ playerMobile.equipR = function(e){
   }
   else
   {
-    playerMobile.rHand = null;
+    playerMobile.rightHand = null;
   }
 };
 
 playerMobile.equipL = function(e){
   e.preventDefault();
   // console.log('equipL function');
-  var currentWep = playerMobile.lHand;
+  var currentWep = playerMobile.leftHand;
   var newWep = document.getElementById('wepListL').value;
-  var rightHandWep = playerMobile.rHand;
+  var rightHandWep = playerMobile.rightHand;
   if(newWep === 'None'){
     // console.log('None choosen for Left hand');
     if(currentWep != null){
       playerMobile.inventory.push(currentWep);
     }
-    playerMobile.lHand = null;
+    playerMobile.leftHand = null;
     playerMobile.updateStats();
     return;
   }
@@ -309,18 +279,18 @@ playerMobile.equipL = function(e){
             return;
           }
         }
-        if(playerMobile.lHand != null){
-          playerMobile.inventory.push(playerMobile.lHand);
+        if(playerMobile.leftHand != null){
+          playerMobile.inventory.push(playerMobile.leftHand);
         }
         playerMobile.inventory.splice( i, 1);
-        playerMobile.lHand = newWep;
+        playerMobile.leftHand = newWep;
         playerMobile.updateStats();
         return;
       }
     };
   }
   else{
-    playerMobile.lHand = null;
+    playerMobile.leftHand = null;
     playerMobile.updateStats();
   }
 };

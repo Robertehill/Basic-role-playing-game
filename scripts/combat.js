@@ -67,9 +67,9 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
     if (combat.hitChance(attacker, defender, hitBonus)){
       var damage = util.getRandomNum(attacker.minDmg, attacker.maxDmg) + dmgBonus;
       stamLoss += 1;
-      if (playerMobile.lHand != null){
-        if (playerMobile.lHand.wepType === 'shield'){
-          var shield = playerMobile.lHand;
+      if (playerMobile.leftHand != null){
+        if (playerMobile.leftHand.wepType === 'shield'){
+          var shield = playerMobile.leftHand;
           if (shield.blockChance > util.getRandomNum(1,100)){
             var reducedDamage = Math.floor(damage * ((shield.armor * 2) / 100));
             if (reducedDamage < 1){
@@ -121,8 +121,8 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
     var damage2 = util.getRandomNum(attacker.minDmg, attacker.maxDmg) + dmgBonus;
     var duelWeild = false;
     if ( attacker === playerMobile){
-      if ( attacker.rHand != null){
-        weapon = attacker.rHand;
+      if ( attacker.rightHand != null){
+        weapon = attacker.rightHand;
         stamLoss += weapon.stamUsed;
         damage = util.getRandomNum(weapon.minDmg, weapon.maxDmg)+ dmgBonus;
       }
@@ -130,8 +130,8 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
         stamLoss += 1;
         damage = util.getRandomNum(playerMobile.minDmg, playerMobile.maxDmg)+ dmgBonus;
       }
-      if(attacker.lHand != null){
-        weapon2 = attacker.lHand;
+      if(attacker.leftHand != null){
+        weapon2 = attacker.leftHand;
         if(weapon2.wepType != 'shield'){
           duelWeild = true;
           damage2 = util.getRandomNum(weapon2.minDmg, weapon2.maxDmg)+ dmgBonus;
@@ -164,11 +164,11 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
       reducedDamage2 = 0;
     }
     if (duelWeild){
-      if(attacker.rHand != null){
-        damage -= damage * ((attacker.rHand.numHands + 2) * 10) / 100;
+      if(attacker.rightHand != null){
+        damage -= damage * ((attacker.rightHand.numHands + 2) * 10) / 100;
       }
-      if (attacker.lHand != null){
-        damage2 -= damage2 * ((attacker.lHand.numHands + 2) * 10) / 100;
+      if (attacker.leftHand != null){
+        damage2 -= damage2 * ((attacker.leftHand.numHands + 2) * 10) / 100;
       }
     }
     damage -= reducedDamage1;

@@ -93,7 +93,7 @@ shieldBash.use = function(attacker, defender, count){
   }
   if (attacker === playerMobile){
 
-    var wepL = attacker.lHand;
+    var wepL = attacker.leftHand;
 
     if (wepL != null){
       if (wepL.wepType === 'shield'){
@@ -135,8 +135,8 @@ doubleStrike.use = function(attacker, defender){
     return;
   }
   if (attacker === playerMobile){
-    var wepR = attacker.rHand;
-    var wepL = attacker.lHand;
+    var wepR = attacker.rightHand;
+    var wepL = attacker.leftHand;
     attacker.stam -= this.stamCost;
     attacker.mana -= this.manaCost;
     // console.log('doubleStrike works');
@@ -167,8 +167,8 @@ poison.use = function(attacker, defender, level, count){
     return;
   }
   if (attacker === playerMobile){
-    var wepR = attacker.rHand;
-    var wepL = attacker.lHand;
+    var wepR = attacker.rightHand;
+    var wepL = attacker.leftHand;
     var wepDmg = 0;
     if (wepL != null || wepR != null){
       if (wepR.wepType === 'pierce' || wepL.wepType === 'pierce'){

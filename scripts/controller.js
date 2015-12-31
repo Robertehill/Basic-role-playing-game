@@ -1,5 +1,6 @@
 var controller =  {};
 
+//not sure this should be here
 controller.saveChar = function (stringName, data){
   var savedGame = JSON.stringify(data);
   localStorage.setItem(stringName, savedGame);
@@ -25,8 +26,8 @@ controller.loadChar = function(stringName){
     playerMobile.armor = parseChar.armor;
     playerMobile.magicResist = parseChar.magicResist;
     playerMobile.wepDmg = parseChar.wepDmg;
-    playerMobile.rHand = parseChar.rHand;
-    playerMobile.lHand = parseChar.lHand;
+    playerMobile.rightHand = parseChar.rightHand;
+    playerMobile.leftHand = parseChar.leftHand;
     playerMobile.head = parseChar.head;
     playerMobile.chest = parseChar.chest;
     playerMobile.arms = parseChar.arms;

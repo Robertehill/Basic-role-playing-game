@@ -80,7 +80,7 @@ var swing = new WepAb('Swing Weapon', 0, 0);
 var flee = new WepAb('Flee', 0, 0);
 var cRest = new WepAb('Rest', 0, 0); //combat rest
 
-// need to prototype the effects on these
+
 var shieldBash = new WepAb('Shield Bash', 5, 0);
 shieldBash.use = function(attacker, defender, count){
   if (attacker.mana - this.manaCost < 0){
@@ -141,7 +141,6 @@ doubleStrike.use = function(attacker, defender){
     attacker.mana -= this.manaCost;
     // console.log('doubleStrike works');
     combat.doMeleeAttack(attacker, defender, 0, 0);
-    // still taking 2nd swing when there is not enough stam
     setTimeout(function(){
       if(defender !=null && defender.hitPoints > 0){
         combat.doMeleeAttack(attacker, defender, -10, 0);

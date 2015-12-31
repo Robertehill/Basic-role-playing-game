@@ -41,6 +41,91 @@ combat.randomCombat = function(level, chance){
     }
   };
 };
+//TODO  make useable by NPCs
+combat.useWepAb = function(e){
+  e.preventDefault();
+  var abChoice = $('#useWepAb').val();
+  for (var i = 0; i < playerMobile.knownWepAbs.length; i++) {
+    if (playerMobile.knownWepAbs[i].stringName === abChoice){
+      abChoice = playerMobile.knownWepAbs[i];
+    }
+  };
+  if (playerMobile.stam - abChoice.stamCost < 0 ){
+    util.printToGameWindow('You need more stam to do that','negitive');
+    return;
+  }
+  if (playerMobile.mana - abChoice.manaCost < 0){
+    util.printToGameWindow('You need more mana to do that','negitive');
+    return;
+  }
+  // TODO break down to a getActiveWepAbs function
+  switch(abChoice.stringName){
+  case 'Rest':
+    doCombatRest(playerMobile, playerMobile.combatant);
+    if (playerMobile.combatant != null){
+      playerMobile.combatant.combat(playerMobile);
+    }
+    break;
+
+  case 'Swing Weapon':
+    combat.doMeleeAttack(playerMobile, playerMobile.combatant, 0, 0);
+    if (playerMobile.combatant != null){
+      playerMobile.combatant.combat(playerMobile);
+    }
+    break;
+
+  case 'Flee':
+    combat.endCombat();
+    break;
+
+  case 'Double Strike':
+    doubleStrike.use(playerMobile, playerMobile.combatant);
+    break;
+
+  case 'Poison':
+    var pLevel = Math.floor(playerMobile.wis / 20);
+    var pCount = Math.floor(playerMobile.dex / 5);
+    poison.use(playerMobile, playerMobile.combatant, pLevel, pCount);
+    break;
+
+  case 'Shield Bash':
+    shieldBash.use(playerMobile, playerMobile.combatant, Math.floor(playerMobile.str / 20));
+    break;
+  }
+  //Add new weapon abilities here
+  playerMobile.updateStats();
+};
+// TODO make useable by NPCs
+combat.castSpell = function(e) {
+  e.preventDefault();
+  var spellChoice = $('spells').val();
+  for (var i = 0; i < playerMobile.knownSpells.length; i++) {
+    if (playerMobile.knownSpells[i].stringName === spellChoice){
+      spellChoice = playerMobile.knownSpells[i];
+    }
+  };
+  if (playerMobile.mana - spellChoice.manaCost < 0){
+    util.printToGameWindow('You need more mana to do that','negitive');
+    return;
+  }
+  // TODO break down to a get active spells function
+  switch(spellChoice.stringName){
+
+  case 'Fire Ball':
+    // console.log('casting fireBall');
+    fireBallSpell.castDmg(playerMobile, playerMobile.combatant, 0);
+    if (playerMobile.combatant != null){
+      playerMobile.combatant.combat(playerMobile);
+    }
+    break;
+
+  case 'Lesser Heal':
+    lesserHealSpell.castHeal(playerMobile, playerMobile,0);
+    break;
+    // add new spells here
+  }
+};
+
 combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
   var stamLoss = 0;
   hitBonus = util.checkNaN(hitBonus);
@@ -87,7 +172,7 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
       }
       else{
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName + ' for '+ damage +' damage','negitive');
-        updateStats();
+        playerMobile.updateStats();
         attacker.stam -= stamLoss;
         defender.hitPoints = 0;
         playerMobile.death(attacker);
@@ -217,7 +302,7 @@ playerMobile.combat = function(opponent){
     };
     var $wepAbBut = $('<button>').html('Use Ability').attr('id','useWepAbBut');
     $parent.append($wepAbBut);
-    $('#useWepAbBut').on('click', playerMobile.useWepAb);
+    $('#useWepAbBut').on('click', combat.useWepAb);
 
     if (this.charClass ==='Wizard'){
       var $action2 = $('<select>').attr('id','spells');
@@ -230,7 +315,7 @@ playerMobile.combat = function(opponent){
       };
       var $castBut = $('<button>').attr('id', 'cast').html('Cast Spell');
       $parent.append($castBut);
-      $('#cast').on('click', playerMobile.castSpell);
+      $('#cast').on('click', combat.castSpell);
     }
   }
   else{

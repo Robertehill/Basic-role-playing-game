@@ -229,6 +229,7 @@ playerMobile.combat = function(opponent){
   playerMobile.combatant = new Monster(opponent.stringName, opponent.level, opponent.hitPoints, opponent.mana, opponent.stam, opponent.str, opponent.wis, opponent.dex, opponent.armor, opponent.magicResist, opponent.minDmg, opponent.maxDmg);
   $('#opponentStats').fadeIn();
   playerMobile.updateStats();
+  // should be split out of here
   var castSpell = function(e) {
     e.preventDefault();
     var spellChoice = document.getElementById('spells').value;
@@ -257,6 +258,7 @@ playerMobile.combat = function(opponent){
       break;
     }
   };
+  //should be spilt out of here
   var useWepAb = function(e){
     e.preventDefault();
     var $abChoice = $('#useWepAb').val();

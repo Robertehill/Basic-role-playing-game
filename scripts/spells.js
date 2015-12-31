@@ -21,7 +21,7 @@ Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
     return true;
   }
   else{
-    util.printToGameWindow(attacker.stringName+'s '+this.stringName+' has missed ' + defender.stringName);
+    util.printToGameWindow(attacker.stringName+'s '+this.stringName+' has missed ' + defender.stringName, 'negitive');
     return false;
   }
 };
@@ -34,24 +34,24 @@ Spell.prototype.spellCastChance = function(caster, bonus) {
     chance = 10;
   }
   if (chance >= 100) {
-    util.printToGameWindow(caster.stringName+' is casting a '+this.stringName+' spell');
+    util.printToGameWindow(caster.stringName+' is casting a '+this.stringName+' spell','positive');
     caster.mana -= this.manaCost;
     return true;
   }
   else if (chance >= util.getRandomNum(0,100)){
-    util.printToGameWindow(caster.stringName+' is casting a '+this.stringName+' spell');
+    util.printToGameWindow(caster.stringName+' is casting a '+this.stringName+' spell','positive');
     caster.mana -= this.manaCost;
     return true;
   }
   else{
-    util.printToGameWindow(caster.stringName+'\'s '+this.stringName+' has failed to cast');
+    util.printToGameWindow(caster.stringName+'\'s '+this.stringName+' has failed to cast','negitive');
     caster.mana -= Math.floor(this.manaCost/4);
     return false;
   }
 };
 Spell.prototype.castHeal = function(caster, target, hitBonus){
   if(caster.mana - this.manaCost < 0){
-    util.printToGameWindow(caster + ' does not have enough mana to cast that');
+    util.printToGameWindow(caster + ' does not have enough mana to cast that','negitive');
     playerMobile.updateStats();
     return;
   }
@@ -71,7 +71,7 @@ Spell.prototype.castHeal = function(caster, target, hitBonus){
 };
 Spell.prototype.castDmg = function(attacker, defender, hitBonus){
   if(attacker.mana - this.manaCost < 0){
-    util.printToGameWindow(attacker + ' does not have enough mana to cast that');
+    util.printToGameWindow(attacker + ' does not have enough mana to cast that','negitive');
     playerMobile.updateStats();
     return;
   }
@@ -86,7 +86,7 @@ Spell.prototype.castDmg = function(attacker, defender, hitBonus){
       }
       var critChance = util.getRandomNum(0, Math.floor(attacker.wis / 10));
       if (critChance > util.getRandomNum(0,100)){
-        console.log('player crit Hit for an extra'+ Math.floor(attacker.wis / 10) +' damage');
+        console.log('player crit Hit for an extra'+ Math.floor(attacker.wis / 10) +' damage','positive');
         damage += attacker.wis / 10;
 
       }
@@ -95,7 +95,7 @@ Spell.prototype.castDmg = function(attacker, defender, hitBonus){
       if (damage < 1) {
         damage = 1;
       };
-      util.printToGameWindow(attacker.stringName +' hits '+ defender.stringName+ ' with a ' + this.stringName + ' for '+damage+' damage');
+      util.printToGameWindow(attacker.stringName +' hits '+ defender.stringName+ ' with a ' + this.stringName + ' for '+damage+' damage','positive');
       defender.hitPoints -= damage;
       if(defender.hitPoints <= 0){
         playerMobile.giveExp(attacker, defender);
@@ -106,6 +106,6 @@ Spell.prototype.castDmg = function(attacker, defender, hitBonus){
   }
   playerMobile.updateStats();
 };
-
+// move to JSON file
 var fireBallSpell = new Spell('Fire Ball',1, 10, 5, 20);
 var lesserHealSpell = new Spell('Lesser Heal',1, 10, 10, 20);

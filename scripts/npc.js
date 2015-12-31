@@ -88,7 +88,7 @@ Monster.prototype.combat = function(opponent){
   if (this.stunned){
     return;
   }
-  //start of combat AI
+  //start of AI combat
   if (util.getRandomNum(0, 100) < 25 && this.stam < Math.floor(this.dex / 2) || this.hitPoints < Math.floor(this.str / 2) || this.mana < Math.floor(this.wis / 2) ){
     doCombatRest(this, opponent);
     return;
@@ -110,7 +110,7 @@ Monster.prototype.combat = function(opponent){
   }
 };
 
-//going to move these to a JSON file
+//going to move these to a JSON or SQL file
 // (stringName, level, hitPoints, mana, stam, str, wis, dex, armor, magicResist, minDmg, maxDmg)
 var weakSkeleton = new Monster('a skeleton',1,30,5,20,30,5,20,5,5,1,6);
 monsterList.push(weakSkeleton);

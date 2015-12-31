@@ -212,6 +212,9 @@ playerMobile.updateStats = function(){
   if (playerMobile.exp >= playerMobile.expToLvl){
     playerMobile.levelUp();
   }
+  if (playerMobile.hits < 0){playerMobile.hits = 0;}
+  if (playerMobile.stam < 0){playerMobile.stam = 0;}
+  if (playerMobile.mana < 0){playerMobile.mana = 0;}
   view.playerStatsToHtml();
   view.playerEqiupToHtml();
   controller.saveChar(playerMobile.stringName, playerMobile);

@@ -35,11 +35,11 @@ var Monster = function(stringName, level, hitPoints, mana, stam, str, wis, dex, 
 Monster.prototype.death = function(killer){
   util.printToGameWindow(this.stringName+ ' has died','positive');
   if(killer === playerMobile){
-    giveExp(killer, this);
-    giveLoot(killer, this, this.level);
+    playerMobile.giveExp(killer, this);
+    playerMobile.giveLoot(killer, this, this.level);
     combat.endCombat();
   }
-  updateStats();
+  playerMobile.updateStats();
 };
 Monster.prototype.combat = function(opponent){
   if(this.poisoned && this.hitPoints > 0){

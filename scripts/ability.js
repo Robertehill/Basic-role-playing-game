@@ -16,7 +16,7 @@ function doMove(){
     combat.randomCombat(playerMobile.level, 100);
     break;
   }
-  updateStats();
+  playerMobile.updateStats();
 }
 function doPassRest(self){
   util.printToGameWindow(self.stringName + ' is resting.');
@@ -42,7 +42,7 @@ function doPassRest(self){
       self.stam += Math.floor(self.dex / 5);
     }
   }
-  updateStats();
+  playerMobile.updateStats();
 }
 function doCombatRest(self, opponent){
   util.printToGameWindow(self.stringName + ' is resting.');
@@ -67,7 +67,7 @@ function doCombatRest(self, opponent){
       self.stam += Math.floor(self.dex / 10);
     }
   }
-  updateStats();
+  playerMobile.updateStats();
 }
 
 //passive abilities

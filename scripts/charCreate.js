@@ -30,7 +30,7 @@ var createChar = function(e) {
   //give the player char starting pass abilities here
   playerMobile.passiveAbs.push(pRest);
   playerMobile.passiveAbs.push(move);
-  passiveActs();
+  playerMobile.passiveActs();
 
   switch(charClass){
   case 'Warrior':

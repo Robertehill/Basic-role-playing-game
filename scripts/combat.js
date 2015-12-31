@@ -99,7 +99,7 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
         defender.hitPoints -= damage;
         attacker.stam -= stamLoss;
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName + ' for '+ damage +' damage','negitive');
-        updateStats();
+        playerMobile.updateStats();
       }
       else{
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName + ' for '+ damage +' damage','negitive');
@@ -189,13 +189,13 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
       if (damage < defender.hitPoints ){
         defender.hitPoints -= damage;
         attacker.stam -= stamLoss;
-        updateStats();
+        playerMobile.updateStats();
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage +' damage','positive');
       }
       else{
         defender.hitPoints = 0;
         attacker.stam -= stamLoss;
-        updateStats();
+        playerMobile.updateStats();
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage +' damage','positive');
       }
     }
@@ -207,13 +207,13 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
         if (damage2 < defender.hitPoints){
           defender.hitPoints -= damage2;
           attacker.stam -= stamLoss;
-          updateStats();
+          playerMobile.updateStats();
           util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage2 +' damage','positive');
         }
         else{
           defender.hitPoints = 0;
           attacker.stam -= stamLoss;
-          updateStats();
+          playerMobile.updateStats();
           util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName+ ' for '+ damage2 +' damage','positive');
         }
       }
@@ -228,7 +228,7 @@ playerMobile.combat = function(opponent){
   $('#usePassAbBut').remove();
   playerMobile.combatant = new Monster(opponent.stringName, opponent.level, opponent.hitPoints, opponent.mana, opponent.stam, opponent.str, opponent.wis, opponent.dex, opponent.armor, opponent.magicResist, opponent.minDmg, opponent.maxDmg);
   $('#opponentStats').fadeIn();
-  updateStats();
+  playerMobile.updateStats();
   var castSpell = function(e) {
     e.preventDefault();
     var spellChoice = document.getElementById('spells').value;
@@ -306,7 +306,7 @@ playerMobile.combat = function(opponent){
       break;
     }
     //Add new weapon abilities here
-    updateStats();
+    playerMobile.updateStats();
   };
   if (this.hitPoints > 0){
     util.printToGameWindow('You are fighting ' + opponent.stringName, 'negitive');

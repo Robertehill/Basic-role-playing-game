@@ -26,7 +26,7 @@ Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
 };
 
 Spell.prototype.spellCastChance = function(caster, bonus) {
-  var chance = (caster.wis / this.level) + checkNaN(bonus);
+  var chance = (caster.wis / this.level) + util.checkNaN(bonus);
   if (chance < 10) {
     chance = 10;
   }

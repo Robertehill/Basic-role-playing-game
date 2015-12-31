@@ -8,7 +8,6 @@ combat.hitChance = function(attacker, defender, hitBonus){
   var dexChance = ((attacker.dex - defender.dex) + 100 ) - 50;
   dexChance = util.checkNaN(dexChance);
   hitBonus = util.checkNaN(hitBonus);
-
   dexChance += hitBonus;
   if(dexChance < 1){
     dexChance = 1;
@@ -23,6 +22,7 @@ combat.hitChance = function(attacker, defender, hitBonus){
     return false;
   }
 };
+
 combat.randomCombat = function(level, chance){
   var lvl = 0;
   if (level > playerMobile.level + Math.floor(playerMobile.level / 10)){
@@ -98,7 +98,7 @@ combat.useWepAb = function(e){
 // TODO make useable by NPCs
 combat.castSpell = function(e) {
   e.preventDefault();
-  var spellChoice = $('spells').val();
+  var spellChoice = $('#spells').val();
   for (var i = 0; i < playerMobile.knownSpells.length; i++) {
     if (playerMobile.knownSpells[i].stringName === spellChoice){
       spellChoice = playerMobile.knownSpells[i];
@@ -292,30 +292,9 @@ playerMobile.combat = function(opponent){
 
   if (this.hitPoints > 0){
     util.printToGameWindow('You are fighting ' + opponent.stringName, 'negitive');
-    var $parent = $('#aggrActions');
-    var $action = $('<select>').attr('id', 'useWepAb');
-    $parent.append($action);
-    var abs = playerMobile.knownWepAbs;
-    for (var i = 0; i < abs.length; i++) {
-      var $opt = $('<option>').html(abs[i].stringName).val(abs[i].stringName);
-      $action.append($opt);
-    };
-    var $wepAbBut = $('<button>').html('Use Ability').attr('id','useWepAbBut');
-    $parent.append($wepAbBut);
-    $('#useWepAbBut').on('click', combat.useWepAb);
-
+    view.makeWepAbList();
     if (this.charClass ==='Wizard'){
-      var $action2 = $('<select>').attr('id','spells');
-      $parent.append($action2);
-      var spells = playerMobile.knownSpells;
-
-      for (var i = 0; i < spells.length; i++) {
-        var $opt = $('<option>').html(spells[i].stringName).val(spells[i].stringName);
-        $action2.append($opt);
-      };
-      var $castBut = $('<button>').attr('id', 'cast').html('Cast Spell');
-      $parent.append($castBut);
-      $('#cast').on('click', combat.castSpell);
+      view.makeSpellList();
     }
   }
   else{

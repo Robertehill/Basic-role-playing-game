@@ -90,3 +90,66 @@ view.makeSpellList = function() {
   $parent.append($castBut);
   $('#cast').on('click', combat.castSpell);
 };
+view.makeEquipList = function(bodyLoc){
+  var $parent = $('#'+bodyLoc+'Equip');
+  var $equipList = $('<select>').attr('id', bodyLoc+'List');
+  $parent.append($equipList.append($('<option>').html('None').val('None')));
+  for (var i = 0; i < playerMobile.inventory.length; i++){
+    var $opt = $('<option>');
+    if (playerMobile.inventory[i].bodyLoc === bodyLoc ){
+      $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
+      $equipList.append($opt);
+    }
+  };
+};
+
+view.makeDuelWepList = function() {
+  var $parentL = $('#leftHandEquip');
+  var $wepListL = $('<select>').attr('id','leftHandList');
+  var $opt1 = $('<option>').html('None').val('None');
+  $parentL.append($wepListL);
+  $wepListL.append($opt1);
+  for (var i = 0; i < playerMobile.inventory.length; i++){
+    var $opt = $('<option>');
+    if (playerMobile.inventory[i].wepType === 'pierce' || playerMobile.inventory[i].wepType === 'slash' || playerMobile.inventory[i].wepType === 'bash'){
+      $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
+      $wepListL.append($opt);
+    }
+  };
+};
+
+view.makeShieldWepList = function() {
+  var $parentL = $('#leftHandEquip');
+  var $wepListL = $('<select>').attr('id', 'leftHandList');
+  var $opt1 = $('<option>').html('None').val('None');
+  $parentL.append($wepListL);
+  $wepListL.append($opt1);
+  for (var i = 0; i < playerMobile.inventory.length; i++){
+    var $opt = $('<option>');
+    if (playerMobile.inventory[i].wepType === 'shield' ){
+      $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
+      $wepListL.append($opt);
+    }
+  };
+};
+
+view.makeWepList = function() {
+  var $parentR = $('#rightHandEquip');
+  var $wepListR = $('<select>').attr('id','rightHandList');
+  $parentR.append($wepListR);
+  var $opt1 = $('<option>').html('None').val('None');
+  $wepListR.append($opt1);
+  for (var i = 0; i < playerMobile.inventory.length; i++){
+    var $opt = $('<option>');
+    if (playerMobile.inventory[i].wepType === 'pierce' || playerMobile.inventory[i].wepType === 'slash' || playerMobile.inventory[i].wepType === 'bash'){
+      $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
+      $wepListR.append($opt);
+    }
+  };
+  if(playerMobile.charClass === 'Rogue'){
+    view.makeDuelWepList();
+  }
+  else if(playerMobile.charClass === 'Warrior'){
+    makeShieldWepList();
+  }
+};

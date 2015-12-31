@@ -9,7 +9,7 @@ controller.equipButtonHandler = function(e) {
   e.stopPropagation();
 };
 
-//not sure this should be here
+//not sure save/load stuff should be here
 controller.saveChar = function (stringName, data){
   var savedGame = JSON.stringify(data);
   localStorage.setItem(stringName, savedGame);

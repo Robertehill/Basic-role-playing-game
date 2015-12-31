@@ -112,7 +112,7 @@ Monster.prototype.combat = function(opponent){
   }
 };
 
-//going to move these to a JSON or SQL file
+//going to move these to a JSON or SQL or xml file
 // (stringName, level, hits, mana, stam, str, wis, dex, armor, magicResist, minDmg, maxDmg)
 var weakSkeleton = new Monster('a skeleton',1,30,5,20,30,5,20,5,5,1,6);
 monsterList.push(weakSkeleton);

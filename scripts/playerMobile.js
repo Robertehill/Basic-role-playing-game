@@ -31,7 +31,7 @@ var playerMobile = {
   armorSlots: ['rightHand','leftHand','head','chest','arms','gloves','legs','boots'],
   combatant: null
 };
-// var playerMobile.combatant = null;
+
 playerMobile.death = function(opponent){
   playerMobile.hits = 1;
   var exp = util.getRandomNum((opponent.level * 10), (opponent.level * 20));
@@ -54,6 +54,7 @@ playerMobile.getMR = function(){
   });
   return magicDef;
 };
+
 playerMobile.getAR = function(){
   var armorRating = 0;
   var tempArmorArray = ['head','chest','arms','gloves','legs','boots'];

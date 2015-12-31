@@ -9,11 +9,13 @@ view.endCombat = function() {
     $('#cast').remove();
   }
 };
+
 view.startCombat = function() {
   $('#usePassAb').remove();
   $('#usePassAbBut').remove();
   $('#opponentStats').fadeIn();
 };
+
 view.removeEqupFromHtml = function() {
   playerMobile.armorSlots.forEach(function(element,index,array) {
     $('#'+element+'List').remove();
@@ -91,9 +93,7 @@ view.makeEquipList = function(bodyLoc){
 view.makeDuelWepList = function() {
   var $parentL = $('#leftHandEquip');
   var $wepListL = $('<select>').attr('id','leftHandList').append($('<option>').html('None').val('None'));
-  // var $opt1 = $('<option>').html('None').val('None');
   $parentL.append($wepListL);
-  // $wepListL.append($opt1);
   for (var i = 0; i < playerMobile.inventory.length; i++){
     var $opt = $('<option>');
     if (playerMobile.inventory[i].wepType === 'pierce' || playerMobile.inventory[i].wepType === 'slash' || playerMobile.inventory[i].wepType === 'bash'){

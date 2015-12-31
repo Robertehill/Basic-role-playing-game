@@ -5,17 +5,17 @@ var Vendor = function(stringName, venType){
   this.inventory = [];
 };
 var blackSmith = new Vendor('Joe the Blacksmith','metalSmith');
-//make function to populate vendor inventory later
+// TODO make function to populate vendor inventory
 blackSmith.inventory.push(dullIronDagger);
 blackSmith.inventory.push(dullIronShortSword);
 blackSmith.inventory.push(ironDagger);
 blackSmith.inventory.push(ironShortSword);
 
 var monsterList =[];
-var Monster = function(stringName, level, hitPoints, mana, stam, str, wis, dex, armor, magicResist, minDmg, maxDmg) {
+var Monster = function(stringName, level, hits, mana, stam, str, wis, dex, armor, magicResist, minDmg, maxDmg) {
   this.stringName = stringName;
   this.level = level;
-  this.hitPoints = hitPoints;
+  this.hits = hits;
   this.mana = mana;
   this.stam = stam;
   this.str = str;
@@ -42,9 +42,9 @@ Monster.prototype.death = function(killer){
   playerMobile.updateStats();
 };
 Monster.prototype.combat = function(opponent){
-  if(this.poisoned && this.hitPoints > 0){
+  if(this.poisoned && this.hits > 0){
     // move to a doPoisonDmg function
-    var poisonDmg = Math.floor(this.hitPoints / (this.poisonLevel * 10) + 1);
+    var poisonDmg = Math.floor(this.hits / (this.poisonLevel * 10) + 1);
     if (poisonDmg <= 1){
       poisonDmg = 1;
     }
@@ -55,13 +55,13 @@ Monster.prototype.combat = function(opponent){
       this.poisonLevel = 1;
     }
     // console.log('poison level = ' + this.poisonLevel +' poisonCount = ' + this.poisonCount);
-    if(this.hitPoints - poisonDmg <= 0){
-      this.hitPoints = 0;
+    if(this.hits - poisonDmg <= 0){
+      this.hits = 0;
       this.poisonCount -= 1;
       util.printToGameWindow(this.stringName+' has lost '+ poisonDmg +' life from poison','poison');
     }
     else{
-      this.hitPoints -= poisonDmg;
+      this.hits -= poisonDmg;
       this.poisonCount -= 1;
       util.printToGameWindow(this.stringName+' has lost '+ poisonDmg +' life from poison', 'poison');
     }
@@ -83,27 +83,27 @@ Monster.prototype.combat = function(opponent){
       this.stunCount -= 1;
     }
   }
-  if (this.hitPoints <= 0){
+  if (this.hits <= 0){
     this.death(opponent);
     return;
   }
   if (this.stunned){
     return;
   }
-  //start of AI combat //move to it's own function 
-  if (util.getRandomNum(0, 100) < 25 && this.stam < Math.floor(this.dex / 2) || this.hitPoints < Math.floor(this.str / 2) || this.mana < Math.floor(this.wis / 2) ){
+  //start of AI combat //move to it's own function
+  if (util.getRandomNum(0, 100) < 25 && this.stam < Math.floor(this.dex / 2) || this.hits < Math.floor(this.str / 2) || this.mana < Math.floor(this.wis / 2) ){
     doCombatRest(this, opponent);
     return;
   }
-  if (util.getRandomNum(0, 100) < 33 && this.stam < Math.floor(this.dex / 3) || this.hitPoints < Math.floor(this.str / 3) || this.mana < Math.floor(this.wis / 3) ){
+  if (util.getRandomNum(0, 100) < 33 && this.stam < Math.floor(this.dex / 3) || this.hits < Math.floor(this.str / 3) || this.mana < Math.floor(this.wis / 3) ){
     doCombatRest(this, opponent);
     return;
   }
-  if (util.getRandomNum(0, 100) < 50 && this.stam < Math.floor(this.dex / 5) || this.hitPoints < Math.floor(this.str / 5) || this.mana < Math.floor(this.wis / 5) ){
+  if (util.getRandomNum(0, 100) < 50 && this.stam < Math.floor(this.dex / 5) || this.hits < Math.floor(this.str / 5) || this.mana < Math.floor(this.wis / 5) ){
     doCombatRest(this, opponent);
     return;
   }
-  if (this.stam < Math.floor(this.dex / 10) || this.hitPoints < Math.floor(this.str / 10) || this.mana < Math.floor(this.wis / 10) || this.hitPoints <= 0 || this.mana <= 0 || this.stam <=0){
+  if (this.stam < Math.floor(this.dex / 10) || this.hits < Math.floor(this.str / 10) || this.mana < Math.floor(this.wis / 10) || this.hits <= 0 || this.mana <= 0 || this.stam <=0){
     doCombatRest(this, opponent);
     return;
   }
@@ -113,7 +113,7 @@ Monster.prototype.combat = function(opponent){
 };
 
 //going to move these to a JSON or SQL file
-// (stringName, level, hitPoints, mana, stam, str, wis, dex, armor, magicResist, minDmg, maxDmg)
+// (stringName, level, hits, mana, stam, str, wis, dex, armor, magicResist, minDmg, maxDmg)
 var weakSkeleton = new Monster('a skeleton',1,30,5,20,30,5,20,5,5,1,6);
 monsterList.push(weakSkeleton);
 var wolf = new Monster('a wolf',1,30,10,30,30,10,30,5,5,6,8);

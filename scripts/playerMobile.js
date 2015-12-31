@@ -5,7 +5,7 @@ var playerMobile = {
   expToLvl: 100,
   stringName: null, // set to null for debugging
   charClass: null,// set to null for debugging
-  hitPoints: 0,
+  hits: 0,
   mana: 0,
   stam: 0,
   str: 0,
@@ -28,11 +28,12 @@ var playerMobile = {
   knownSpells: [],
   knownWepAbs: [],
   passiveAbs: [],
+  armorSlots: ['rightHand','leftHand','head','chest','arms','gloves','legs','boots'],
   combatant: null
 };
 // var playerMobile.combatant = null;
 playerMobile.death = function(opponent){
-  playerMobile.hitPoints = 1;
+  playerMobile.hits = 1;
   var exp = util.getRandomNum((opponent.level * 10), (opponent.level * 20));
   if(playerMobile.exp - exp < 0){
     playerMobile.exp - 0;
@@ -120,61 +121,6 @@ playerMobile.levelUp = function(){
   util.printToGameWindow(playerMobile.stringName+' has reached level '+playerMobile.level, 'positive');
 };
 
-playerMobile.makeEquipList = function(bodyLoc){
-  var $parent = $('#'+bodyLoc+'Equip');
-  var $equipList = $('<select>').attr('id', bodyLoc+'List');
-  $parent.append($equipList.append($('<option>').html('None').val('None')));
-  for (var i = 0; i < playerMobile.inventory.length; i++){
-    var $opt = $('<option>');
-    if (playerMobile.inventory[i].bodyLoc === bodyLoc ){
-      $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
-      $equipList.append($opt);
-    }
-  };
-};
-
-playerMobile.makeWepList = function(argument) {
-  var $parentR = $('#rightHandEquip');
-  var $parentL = $('#leftHandEquip');
-  var $wepListR = $('<select>').attr('id','rightHandList');
-  $parentR.append($wepListR);
-  var $opt1 = $('<option>').html('None').val('None');
-  $wepListR.append($opt1);
-  for (var i = 0; i < playerMobile.inventory.length; i++){
-    var $opt = $('<option>');
-    if (playerMobile.inventory[i].wepType === 'pierce' || playerMobile.inventory[i].wepType === 'slash' || playerMobile.inventory[i].wepType === 'bash'){
-      $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
-      $wepListR.append($opt);
-    }
-  };
-  if(playerMobile.charClass === 'Rogue'){
-    var $wepListL = $('<select>').attr('id','leftHandList');
-    var $opt1 = $('<option>').html('None').val('None');
-    $parentL.append($wepListL);
-    $wepListL.append($opt1);
-    for (var i = 0; i < playerMobile.inventory.length; i++){
-      var $opt = $('<option>');
-      if (playerMobile.inventory[i].wepType === 'pierce' || playerMobile.inventory[i].wepType === 'slash' || playerMobile.inventory[i].wepType === 'bash'){
-        $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
-        $wepListL.append($opt);
-      }
-    };
-  }
-  else if(playerMobile.charClass === 'Warrior'){
-    var $wepListL = $('<select>').attr('id', 'leftHandList');
-    var $opt1 = $('<option>').html('None').val('None');
-    $parentL.append($wepListL);
-    $wepListL.append($opt1);
-    for (var i = 0; i < playerMobile.inventory.length; i++){
-      var $opt = $('<option>');
-      if (playerMobile.inventory[i].wepType === 'shield' ){
-        $opt.html(playerMobile.inventory[i].stringName).val(playerMobile.inventory[i].stringName);
-        $wepListL.append($opt);
-      }
-    };
-  }
-};
-
 playerMobile.updateStats = function(){
   playerMobile.armor = playerMobile.getAR();
   playerMobile.magicResist = playerMobile.getMR();
@@ -192,23 +138,21 @@ playerMobile.updateStats = function(){
   }
   view.removeEqupFromHtml();
 
-  playerMobile.makeEquipList('head');
-  playerMobile.makeEquipList('chest');
-  playerMobile.makeEquipList('arms');
-  playerMobile.makeEquipList('gloves');
-  playerMobile.makeEquipList('legs');
-  playerMobile.makeEquipList('boots');
-  playerMobile.makeWepList();
+  view.makeEquipList('head');
+  view.makeEquipList('chest');
+  view.makeEquipList('arms');
+  view.makeEquipList('gloves');
+  view.makeEquipList('legs');
+  view.makeEquipList('boots');
+  view.makeWepList();
 };
 
 playerMobile.equipL = function(e){
   e.preventDefault();
-  // console.log('equipL function');
   var currentWep = playerMobile.leftHand;
   var newWep = $('lHandList').val();
   var rightHandWep = playerMobile.rightHand;
   if(newWep === 'None'){
-    // console.log('None choosen for Left hand');
     if(currentWep != null){
       playerMobile.inventory.push(currentWep);
     }
@@ -217,11 +161,9 @@ playerMobile.equipL = function(e){
     return;
   }
   else if(newWep != null){
-    // console.log('new wep picked');
     for (var i = 0; i < playerMobile.inventory.length; i++) {
       if(newWep === playerMobile.inventory[i].stringName){
         newWep = playerMobile.inventory[i];
-        // console.log('new wep = '+ newWep + ' numHands ' + newWep.numHands);
         if(newWep.wepType === 'shield'){
           if (rightHandWep.numHands > 1){
             util.printToGameWindow('You can\'t equip a a shield while holding a two handed weapon' );
@@ -229,7 +171,6 @@ playerMobile.equipL = function(e){
           };
         }
         if (newWep.wepType != 'shield' && newWep.numHands != 0){
-            // console.log('can't duel weld this');
           return;
         }
         if(rightHandWep != null){
@@ -267,8 +208,7 @@ playerMobile.equip = function(event, bodyLoc) {
     playerMobile.updateStats();
     return;
   }
-  else if(newArmor != null)
-  {
+  else if(newArmor != null){
     for (var i = 0; i < playerMobile.inventory.length; i++) {
       if(newArmor === playerMobile.inventory[i].stringName){
         if(currentArmor != null){
@@ -286,33 +226,6 @@ playerMobile.equip = function(event, bodyLoc) {
     playerMobile.bodyLoc = null;
   }
 };
-// left hand has some unquie rules and can't be grouped with the rest of the equipment
-$('#leftHandEquipBut').on('click', playerMobile.equipL);
-// TODO make this one event handler
-$('#rightHandEquipBut').on('click', function(e){
-  playerMobile.equip(e,'rightHand');
-});
-$('#headEquipBut').on('click', function(e){
-  playerMobile.equip(e,'head');
-});
-$('#chestEquipBut').on('click', function(e){
-  playerMobile.equip(e,'head');
-});
-$('#chestEquipBut').on('click', function(e){
-  playerMobile.equip(e,'chest');
-});
-$('#armsEquipBut').on('click', function(e){
-  playerMobile.equip(e,'arms');
-});
-$('#glovesEquipBut').on('click', function(e){
-  playerMobile.equip(e,'gloves');
-});
-$('#legsEquipBut').on('click', function(e){
-  playerMobile.equip(e,'legs');
-});
-$('#bootsEquipBut').on('click', function(e){
-  playerMobile.equip(e,'boots');
-});
 
 playerMobile.giveExp = function(attacker, defender){
   var exp = util.getRandomNum((defender.level * 10), (defender.level * 20));
@@ -323,26 +236,23 @@ playerMobile.giveExp = function(attacker, defender){
 playerMobile.giveGold = function(min, max, bonus){
   if (min > max){max = min;}
   var gold = util.getRandomNum(min, max);
-  if(gold < 1 || gold === NaN){gold = 1;}
-  if(bonus < 0 || bonus === NaN){bonus = 0;}
-  gold *= bonus;
-  this.gold += gold;
+  gold *= util.checkNaN(bonus);
+  this.gold += util.checkNaN(gold);
   util.printToGameWindow(playerMobile.stringName +' has found ' + gold + ' gold','loot');
 };
 
 playerMobile.giveLoot = function(attacker, defender, lootLevel){
+  lootLevel = util.checkNaN(lootLevel);
   playerMobile.giveGold(attacker.level,(attacker.level * 10), lootLevel);
   if (util.getRandomNum(attacker.level, 100) > util.getRandomNum(defender.level, 100)){
-      // console.log('random loot chance failed');
     playerMobile.updateStats();
     return;
   }
   if(lootLevel < 5){
-    for (var i = util.getRandomNum(0, lootPackBasic.length - 1); i < lootPackBasic.length; i++){
-      util.printToGameWindow(attacker.stringName +' has found ' + lootPackBasic[i].stringName,'loot');
-      playerMobile.inventory.push(lootPackBasic[i]);
-      playerMobile.updateStats();
-      return;
-    };
+    var i = util.getRandomNum(0, lootPackBasic.length - 1);
+    util.printToGameWindow(attacker.stringName +' has found ' + lootPackBasic[i].stringName,'loot');
+    playerMobile.inventory.push(lootPackBasic[i]);
+    playerMobile.updateStats();
+    return;
   }
 };

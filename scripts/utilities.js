@@ -12,10 +12,6 @@ util.getRandomNum = function(min, max){
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 util.checkNaN = function(number) {
-  if(number <= 0 || number === NaN ) {
-    return 0;
-  }
-  else{
-    return number;
-  }
+  if(number <= 0 || number === NaN ) {return 0;}
+  else{return number;}
 };

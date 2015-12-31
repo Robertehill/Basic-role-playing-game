@@ -32,7 +32,7 @@ playerMobile.createChar = function(e) {
   switch(charClass){
     //set stats here for new players
   case 'Warrior':
-    playerMobile.hitPoints = 50;
+    playerMobile.hits = 50;
     playerMobile.mana = 10;
     playerMobile.stam = 40;
     playerMobile.str = 50;
@@ -44,7 +44,7 @@ playerMobile.createChar = function(e) {
     playerMobile.knownWepAbs.push(doubleStrike);
     break;
   case 'Rogue':
-    playerMobile.hitPoints = 40;
+    playerMobile.hits = 40;
     playerMobile.mana = 20;
     playerMobile.stam = 40;
     playerMobile.str = 40;
@@ -56,7 +56,7 @@ playerMobile.createChar = function(e) {
     playerMobile.knownWepAbs.push(poison);
     break;
   case 'Wizard':
-    playerMobile.hitPoints = 40;
+    playerMobile.hits = 40;
     playerMobile.mana = 50;
     playerMobile.stam = 10;
     playerMobile.str = 40;
@@ -72,5 +72,3 @@ playerMobile.createChar = function(e) {
   util.printToGameWindow(playerMobile.stringName +' the ' + playerMobile.charClass +' has joined the world!');
   playerMobile.combat(weakSkeleton);
 };
-
-$('#createCharButton').on('click', playerMobile.createChar);

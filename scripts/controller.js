@@ -1,6 +1,15 @@
 var controller =  {};
+controller.equipButtonHandler = function(e) {
+  if (e.target !== e.currentTarget) {
+    var clickedItem = e.target.id;
+    clickedItem = clickedItem.replace('EquipBut','');
+    // console.log(clickedItem);
+    playerMobile.equip(e, clickedItem);
+  }
+  e.stopPropagation();
+};
 
-//not sure this should be here
+//not sure save/load stuff should be here
 controller.saveChar = function (stringName, data){
   var savedGame = JSON.stringify(data);
   localStorage.setItem(stringName, savedGame);
@@ -17,7 +26,7 @@ controller.loadChar = function(stringName){
     playerMobile.expToLvl = parseChar.expToLvl;
     playerMobile.stringName = parseChar.stringName;
     playerMobile.charClass = parseChar.charClass;
-    playerMobile.hitPoints = parseChar.hitPoints;
+    playerMobile.hits = parseChar.hits;
     playerMobile.mana = parseChar.mana;
     playerMobile.stam = parseChar.stam;
     playerMobile.str = parseChar.str;
@@ -43,3 +52,10 @@ controller.loadChar = function(stringName){
     playerMobile.updateStats();
   }
 };
+// start eventHandlers on doc ready
+$(function() {
+  $('#createCharButton').on('click', playerMobile.createChar);
+  // left hand has some unquie rules and can't be grouped with the rest of the equipment easily
+  $('#leftHandEquipBut').on('click', playerMobile.equipL);
+  $('#statTable').on('click', controller.equipButtonHandler);
+});

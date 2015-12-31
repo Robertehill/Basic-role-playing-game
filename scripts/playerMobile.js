@@ -42,6 +42,7 @@ playerMobile.death = function(opponent){
   }
   util.printToGameWindow(playerMobile.stringName +' has been knocked out and lost ' + exp + ' experience','negitive');
 };
+
 playerMobile.getMR = function(){
   var magicDef = 0;
   if(playerMobile.head != null){
@@ -94,7 +95,7 @@ playerMobile.getAR = function(){
 };
 
 playerMobile.passiveActs = function(){
-  var parent = document.getElementById('passActions');
+  var $parent = $('#passActions');
   var usePassAb = function(e){
     e.preventDefault();
 
@@ -118,36 +119,21 @@ playerMobile.passiveActs = function(){
       break;
     case 'Move':
       doMove();
-      // console.log('passive Ability function = '+ abChoice.stringName);
       break;
-        // case 'Flee':
-        //   //doFlee();
-        //   console.log('weapon Ability function using..'+ abChoice.stringName + ' on ' + opponent.stringName);
-
-        //   break;
     }
-    updateStats();
+    playerMobile.updateStats();
   };
-  var action = document.createElement('select');
-  parent.appendChild(action);
+  var $action = $('<select>').attr('id', 'usePassAb');
+  $parent.append($action);
   var abs = playerMobile.passiveAbs;
 
   for (var i = 0; i < abs.length; i++) {
-    var opt = document.createElement('option');
-
-    opt.innerHTML = abs[i].stringName;
-    opt.value = abs[i].stringName;
-    action.appendChild(opt);
+    var $opt = $('<option>').html(abs[i].stringName).val(abs[i].stringName);
+    $action.append($opt);
   };
-  action.id = 'usePassAb';
-  var passAbBut = document.createElement('button');
-  passAbBut.type = 'click';
-  passAbBut.id = 'usePassAbBut';
-  passAbBut.innerHTML = 'Use Ability';
-  parent.appendChild(passAbBut);
-  var passAbButton = document.getElementById('usePassAbBut');
-  passAbButton.addEventListener('click', usePassAb);
-
+  var $passAbBut = $('<button>').html('Use Ability').attr('id','usePassAbBut');
+  $parent.append($passAbBut);
+  $('#usePassAbBut').on('click', usePassAb);
 };
 
 playerMobile.levelUp = function(){
@@ -162,6 +148,7 @@ playerMobile.levelUp = function(){
   playerMobile.str += Math.floor(playerMobile.str / 10);
   playerMobile.wis += Math.floor(playerMobile.wis / 10);
   playerMobile.dex += Math.floor(playerMobile.dex / 10);
+  util.printToGameWindow(playerMobile.stringName+' has reached level '+playerMobile.level, 'positive');
 };
 
 playerMobile.makeEquipList = function(bodyLoc){
@@ -223,8 +210,11 @@ playerMobile.updateStats = function(){
   playerMobile.armor = playerMobile.getAR();
   playerMobile.magicResist = playerMobile.getMR();
   if (playerMobile.exp >= playerMobile.expToLvl){
-    levelUp();
+    playerMobile.levelUp();
   }
+  if (playerMobile.hits < 0){playerMobile.hits = 0;}
+  if (playerMobile.stam < 0){playerMobile.stam = 0;}
+  if (playerMobile.mana < 0){playerMobile.mana = 0;}
   view.playerStatsToHtml();
   view.playerEqiupToHtml();
   controller.saveChar(playerMobile.stringName, playerMobile);
@@ -371,31 +361,24 @@ $('#rightHandEquipBut').on('click', playerMobile.equipR);
 $('#leftHandEquipBut').on('click', playerMobile.equipL);
 // plan to make this one event handler
 $('#headEquipBut').on('click', function(e){
-  console.log('headEquipBut clicked');
   playerMobile.equip(e,'head');
 });
 $('#chestEquipBut').on('click', function(e){
-  console.log('chestEquipBut clicked');
   playerMobile.equip(e,'head');
 });
 $('#chestEquipBut').on('click', function(e){
-  console.log('chestEquipBut clicked');
   playerMobile.equip(e,'chest');
 });
 $('#armsEquipBut').on('click', function(e){
-  console.log('chestEquipBut clicked');
   playerMobile.equip(e,'arms');
 });
 $('#glovesEquipBut').on('click', function(e){
-  console.log('glovesEquipBut clicked');
   playerMobile.equip(e,'gloves');
 });
 $('#legsEquipBut').on('click', function(e){
-  console.log('legsEquipBut clicked');
   playerMobile.equip(e,'legs');
 });
 $('#bootsEquipBut').on('click', function(e){
-  console.log('bootsEquipBut clicked');
   playerMobile.equip(e,'boots');
 });
 

@@ -1,38 +1,36 @@
 var createChar = function(e) {
   e.preventDefault();
+  var $stringName = $('#charNameForm');
   var savedChar = localStorage.getItem($stringName);
   var parseChar = JSON.parse(savedChar);
-  var $stringName = $('#charNameForm');
   console.log('char create function called');
   if (!$stringName.val() || $stringName.val() === 'Please Enter a Name'){
     $stringName.val('Please Enter a Name');
     return;
   }
-
   for(var i in window.localStorage){
     val = localStorage.getItem(i);
     if ($stringName.val() === i){
-
       controller.loadChar(i);
       playerMobile.combat(weakSkeleton);
       $('#charCreateForm').remove();
       return;
     }
   }
-  var charClass = document.getElementById('charClass').value;
+  var charClass = $('#charClass').val();
   playerMobile.stringName = $stringName.val();
   playerMobile.charClass = charClass;
-  $('#charCreateForm').remove();
-//give the player char starting wep abilities here
+//give the player char starting weapon abilities here
   playerMobile.knownWepAbs.push(swing);
   playerMobile.knownWepAbs.push(flee);
   playerMobile.knownWepAbs.push(cRest);
-  //give the player char starting pass abilities here
+  //give the player char starting passive abilities here
   playerMobile.passiveAbs.push(pRest);
   playerMobile.passiveAbs.push(move);
   playerMobile.passiveActs();
 
   switch(charClass){
+    //set stats here for new players
   case 'Warrior':
     playerMobile.hitPoints = 50;
     playerMobile.mana = 10;
@@ -68,9 +66,9 @@ var createChar = function(e) {
     playerMobile.knownSpells.push(fireBallSpell);
     playerMobile.knownSpells.push(lesserHealSpell);
     break;
-
   }
-  updateStats();
+  $('#charCreateForm').remove();
+  playerMobile.updateStats();
   util.printToGameWindow(playerMobile.stringName +' the ' + playerMobile.charClass +' has joined the world!');
   playerMobile.combat(weakSkeleton);
 };

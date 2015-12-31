@@ -149,7 +149,7 @@ doubleStrike.use = function(attacker, defender){
           defender.combat(attacker);
         }
       }
-    }, 200);
+    }, 300);
     if (defender != null && defender.hitPoints <= 0){
       defender.combat(attacker);
     }

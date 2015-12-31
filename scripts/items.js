@@ -23,7 +23,7 @@ function Armor(stringName, rating, magicDef, arType, bodyLoc){
   this.bodyLoc = bodyLoc;
 }
 
-//going to move these to a JSOn file at some point.
+//going to move these to a JSON or SQL file at some point.
 //Weapon(stringName, wepType, minDmg, maxDmg, stamUsed, range, numHands)
 var dullIronDagger = new Weapon('a dull iron dagger', 'pierce', 2, 5, 1, 1, 0);
 lootPackBasic.push(dullIronDagger);

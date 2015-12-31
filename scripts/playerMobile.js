@@ -68,7 +68,6 @@ playerMobile.passiveActs = function(){
   var $parent = $('#passActions');
   var usePassAb = function(e){
     e.preventDefault();
-
     var abChoice = document.getElementById('usePassAb').value;
     for (var i = 0; i < playerMobile.passiveAbs.length; i++) {
       if (playerMobile.passiveAbs[i].stringName === abChoice){
@@ -137,7 +136,7 @@ playerMobile.makeEquipList = function(bodyLoc){
 playerMobile.makeWepList = function(argument) {
   var $parentR = $('#rightHandEquip');
   var $parentL = $('#leftHandEquip');
-  var $wepListR = $('<select>').attr('id','wepListR');
+  var $wepListR = $('<select>').attr('id','rightHandList');
   $parentR.append($wepListR);
   var $opt1 = $('<option>').html('None').val('None');
   $wepListR.append($opt1);
@@ -202,51 +201,51 @@ playerMobile.updateStats = function(){
   playerMobile.makeWepList();
 };
 
-playerMobile.equipR = function(e){
-  e.preventDefault();
-  // console.log('equip right function');
-  var currentWep = playerMobile.rightHand;
-  var leftHandWep = playerMobile.leftHand;
-
-  var newWep = document.getElementById('wepListR').value;
-  if(newWep === 'None'){
-    // console.log('None choosen for Right hand');
-    if(currentWep != null){
-      playerMobile.inventory.push(currentWep);
-    }
-    playerMobile.rightHand = null;
-    playerMobile.updateStats();
-    return;
-  }
-  else if(newWep != null){
-    for (var i = 0; i < playerMobile.inventory.length; i++) {
-      if(newWep === playerMobile.inventory[i].stringName){
-        if(currentWep != null){
-          playerMobile.inventory.push(currentWep);
-        }
-        newWep = playerMobile.inventory[i];
-        playerMobile.inventory.splice( i, 1);
-        playerMobile.rightHand = newWep;
-        if (newWep.numHands > 1 && leftHandWep != null){
-          playerMobile.inventory.push(leftHandWep);
-          playerMobile.leftHand = null;
-        }
-        playerMobile.updateStats();
-        return;
-      }
-    };
-  }
-  else
-  {
-    playerMobile.rightHand = null;
-  }
-};
+// playerMobile.equipR = function(e){
+//   e.preventDefault();
+//   // console.log('equip right function');
+//   var currentWep = playerMobile.rightHand;
+//   var leftHandWep = playerMobile.leftHand;
+//
+//   var newWep = document.getElementById('wepListR').value;
+//   if(newWep === 'None'){
+//     // console.log('None choosen for Right hand');
+//     if(currentWep != null){
+//       playerMobile.inventory.push(currentWep);
+//     }
+//     playerMobile.rightHand = null;
+//     playerMobile.updateStats();
+//     return;
+//   }
+//   else if(newWep != null){
+//     for (var i = 0; i < playerMobile.inventory.length; i++) {
+//       if(newWep === playerMobile.inventory[i].stringName){
+//         if(currentWep != null){
+//           playerMobile.inventory.push(currentWep);
+//         }
+//         newWep = playerMobile.inventory[i];
+//         playerMobile.inventory.splice( i, 1);
+//         playerMobile.rightHand = newWep;
+//         if (newWep.numHands > 1 && leftHandWep != null){
+//           playerMobile.inventory.push(leftHandWep);
+//           playerMobile.leftHand = null;
+//         }
+//         playerMobile.updateStats();
+//         return;
+//       }
+//     };
+//   }
+//   else
+//   {
+//     playerMobile.rightHand = null;
+//   }
+// };
 
 playerMobile.equipL = function(e){
   e.preventDefault();
   // console.log('equipL function');
   var currentWep = playerMobile.leftHand;
-  var newWep = document.getElementById('wepListL').value;
+  var newWep = $('lHandList').val();
   var rightHandWep = playerMobile.rightHand;
   if(newWep === 'None'){
     // console.log('None choosen for Left hand');
@@ -327,9 +326,12 @@ playerMobile.equip = function(event, bodyLoc) {
     playerMobile.bodyLoc = null;
   }
 };
-$('#rightHandEquipBut').on('click', playerMobile.equipR);
+// $('#rightHandEquipBut').on('click', playerMobile.equipR);
 $('#leftHandEquipBut').on('click', playerMobile.equipL);
 // plan to make this one event handler
+$('#rightHandEquipBut').on('click', function(e){
+  playerMobile.equip(e,'rightHand');
+});
 $('#headEquipBut').on('click', function(e){
   playerMobile.equip(e,'head');
 });

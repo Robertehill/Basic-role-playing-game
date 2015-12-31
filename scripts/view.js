@@ -1,8 +1,8 @@
 var view = {};
 
 view.removeEqupFromHtml = function() {
-  $('#wepListR').remove();
-  $('#wepListL').remove();
+  $('#rightHandList').remove();
+  $('#leftHandList').remove();
   $('#headList').remove();
   $('#chestList').remove();
   $('#armsList').remove();

@@ -52,7 +52,7 @@ Spell.prototype.spellCastChance = function(caster, bonus) {
 Spell.prototype.castHeal = function(caster, target, hitBonus){
   if(caster.mana - this.manaCost < 0){
     util.printToGameWindow(caster + ' does not have enough mana to cast that');
-    updateStats();
+    playerMobile.updateStats();
     return;
   }
   if (this.spellCastChance(caster, hitBonus)){
@@ -67,12 +67,12 @@ Spell.prototype.castHeal = function(caster, target, hitBonus){
 
     }
   }
-  updateStats();
+  playerMobile.updateStats();
 };
 Spell.prototype.castDmg = function(attacker, defender, hitBonus){
   if(attacker.mana - this.manaCost < 0){
     util.printToGameWindow(attacker + ' does not have enough mana to cast that');
-    updateStats();
+    playerMobile.updateStats();
     return;
   }
   var damage = util.getRandomNum(this.minDmg, this.maxDmg);
@@ -98,13 +98,13 @@ Spell.prototype.castDmg = function(attacker, defender, hitBonus){
       util.printToGameWindow(attacker.stringName +' hits '+ defender.stringName+ ' with a ' + this.stringName + ' for '+damage+' damage');
       defender.hitPoints -= damage;
       if(defender.hitPoints <= 0){
-        giveExp(attacker, defender);
-        giveLoot(attacker, defender, defender.level);
-        endCombat();
+        playerMobile.giveExp(attacker, defender);
+        playerMobile.giveLoot(attacker, defender, defender.level);
+        combat.endCombat();
       }
     }
   }
-  updateStats();
+  playerMobile.updateStats();
 };
 
 var fireBallSpell = new Spell('Fire Ball',1, 10, 5, 20);

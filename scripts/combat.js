@@ -288,7 +288,7 @@ playerMobile.combat = function(opponent){
       break;
 
     case 'Flee':
-      endCombat();
+      combat.endCombat();
       break;
 
     case 'Double Strike':

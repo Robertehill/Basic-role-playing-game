@@ -1,8 +1,8 @@
 var createChar = function(e) {
   e.preventDefault();
+  var $stringName = $('#charNameForm');
   var savedChar = localStorage.getItem($stringName);
   var parseChar = JSON.parse(savedChar);
-  var $stringName = $('#charNameForm');
   console.log('char create function called');
   if (!$stringName.val() || $stringName.val() === 'Please Enter a Name'){
     $stringName.val('Please Enter a Name');
@@ -70,7 +70,7 @@ var createChar = function(e) {
     break;
 
   }
-  updateStats();
+  playerMobile.updateStats();
   util.printToGameWindow(playerMobile.stringName +' the ' + playerMobile.charClass +' has joined the world!');
   playerMobile.combat(weakSkeleton);
 };

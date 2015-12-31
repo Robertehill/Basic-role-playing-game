@@ -77,8 +77,8 @@ view.makeSpellList = function() {
 
 view.makeEquipList = function(bodyLoc){
   var $parent = $('#'+bodyLoc+'Equip');
-  var $equipList = $('<select>').attr('id', bodyLoc+'List');
-  $parent.append($equipList.append($('<option>').html('None').val('None')));
+  var $equipList = $('<select>').attr('id', bodyLoc+'List').append($('<option>').html('None').val('None'));
+  $parent.append($equipList);
   for (var i = 0; i < playerMobile.inventory.length; i++){
     var $opt = $('<option>');
     if (playerMobile.inventory[i].bodyLoc === bodyLoc ){
@@ -90,10 +90,10 @@ view.makeEquipList = function(bodyLoc){
 
 view.makeDuelWepList = function() {
   var $parentL = $('#leftHandEquip');
-  var $wepListL = $('<select>').attr('id','leftHandList');
-  var $opt1 = $('<option>').html('None').val('None');
+  var $wepListL = $('<select>').attr('id','leftHandList').append($('<option>').html('None').val('None'));
+  // var $opt1 = $('<option>').html('None').val('None');
   $parentL.append($wepListL);
-  $wepListL.append($opt1);
+  // $wepListL.append($opt1);
   for (var i = 0; i < playerMobile.inventory.length; i++){
     var $opt = $('<option>');
     if (playerMobile.inventory[i].wepType === 'pierce' || playerMobile.inventory[i].wepType === 'slash' || playerMobile.inventory[i].wepType === 'bash'){
@@ -120,10 +120,8 @@ view.makeShieldWepList = function() {
 
 view.makeWepList = function() {
   var $parentR = $('#rightHandEquip');
-  var $wepListR = $('<select>').attr('id','rightHandList');
+  var $wepListR = $('<select>').attr('id','rightHandList').append($('<option>').html('None').val('None'));
   $parentR.append($wepListR);
-  var $opt1 = $('<option>').html('None').val('None');
-  $wepListR.append($opt1);
   for (var i = 0; i < playerMobile.inventory.length; i++){
     var $opt = $('<option>');
     if (playerMobile.inventory[i].wepType === 'pierce' || playerMobile.inventory[i].wepType === 'slash' || playerMobile.inventory[i].wepType === 'bash'){

@@ -9,16 +9,10 @@ function Spell(stringName, level,manaCost, minDmg, maxDmg){
 Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
   var wisChance = ((attacker.wis - defender.wis) + 100) - 50;
   hitBonus = util.checkNaN(hitBonus);
-  if (wisChance < 10){
-    wisChance = 10;
-  }
+  if (wisChance < 10){wisChance = 10;}
   wisChance + hitBonus;
-  if (wisChance >= 100){
-    return true;
-  }
-  else if (wisChance >= util.getRandomNum(1,100)){
-    return true;
-  }
+  if (wisChance >= 100){return true;}
+  else if (wisChance >= util.getRandomNum(1,100)){return true;}
   else{
     util.printToGameWindow(attacker.stringName+'s '+this.stringName+' has missed ' + defender.stringName, 'negitive');
     return false;
@@ -27,9 +21,7 @@ Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
 
 Spell.prototype.spellCastChance = function(caster, bonus) {
   var chance = (caster.wis / this.level) + util.checkNaN(bonus);
-  if (chance < 10) {
-    chance = 10;
-  }
+  if (chance < 10) {chance = 10;}
   if (chance >= 100) {
     util.printToGameWindow(caster.stringName+' is casting a '+this.stringName+' spell','positive');
     caster.mana -= this.manaCost;

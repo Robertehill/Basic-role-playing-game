@@ -1,24 +1,13 @@
 var combat = {};
 combat.endCombat = function(){
-  $('#useWepAb').remove();
-  $('#useWepAbBut').remove();
-  $('#opponentStats').hide();
-  playerMobile.combatant = null;
-  if(playerMobile.charClass === 'Wizard'){
-    $('#spells').remove();
-    $('#cast').remove();
-  }
+  view.endCombat();
   playerMobile.passiveActs();
 };
 
 combat.hitChance = function(attacker, defender, hitBonus){
   var dexChance = ((attacker.dex - defender.dex) + 100 ) - 50;
-  if(dexChance <= 0 || dexChance === NaN ) {
-    dexChance = 0;
-  };
-  if(hitBonus <= 0 || hitBonus === NaN){
-    hitBonus = 0;
-  }
+  dexChance = util.checkNaN(dexChance);
+  hitBonus = util.checkNaN(hitBonus);
   dexChance += hitBonus;
   if(dexChance < 1){
     dexChance = 1;
@@ -33,6 +22,7 @@ combat.hitChance = function(attacker, defender, hitBonus){
     return false;
   }
 };
+
 combat.randomCombat = function(level, chance){
   var lvl = 0;
   if (level > playerMobile.level + Math.floor(playerMobile.level / 10)){
@@ -51,14 +41,95 @@ combat.randomCombat = function(level, chance){
     }
   };
 };
+//TODO  make useable by NPCs
+combat.useWepAb = function(e){
+  e.preventDefault();
+  var abChoice = $('#useWepAb').val();
+  for (var i = 0; i < playerMobile.knownWepAbs.length; i++) {
+    if (playerMobile.knownWepAbs[i].stringName === abChoice){
+      abChoice = playerMobile.knownWepAbs[i];
+    }
+  };
+  if (playerMobile.stam - abChoice.stamCost < 0 ){
+    util.printToGameWindow('You need more stam to do that','negitive');
+    return;
+  }
+  if (playerMobile.mana - abChoice.manaCost < 0){
+    util.printToGameWindow('You need more mana to do that','negitive');
+    return;
+  }
+  // TODO break down to a getActiveWepAbs function
+  switch(abChoice.stringName){
+  case 'Rest':
+    doCombatRest(playerMobile, playerMobile.combatant);
+    if (playerMobile.combatant != null){
+      playerMobile.combatant.combat(playerMobile);
+    }
+    break;
+
+  case 'Swing Weapon':
+    combat.doMeleeAttack(playerMobile, playerMobile.combatant, 0, 0);
+    if (playerMobile.combatant != null){
+      playerMobile.combatant.combat(playerMobile);
+    }
+    break;
+
+  case 'Flee':
+    combat.endCombat();
+    break;
+
+  case 'Double Strike':
+    doubleStrike.use(playerMobile, playerMobile.combatant);
+    break;
+
+  case 'Poison':
+    var pLevel = Math.floor(playerMobile.wis / 20);
+    var pCount = Math.floor(playerMobile.dex / 5);
+    poison.use(playerMobile, playerMobile.combatant, pLevel, pCount);
+    break;
+
+  case 'Shield Bash':
+    shieldBash.use(playerMobile, playerMobile.combatant, Math.floor(playerMobile.str / 20));
+    break;
+  }
+  //Add new weapon abilities here
+  playerMobile.updateStats();
+};
+// TODO make useable by NPCs
+combat.castSpell = function(e) {
+  e.preventDefault();
+  var spellChoice = $('#spells').val();
+  for (var i = 0; i < playerMobile.knownSpells.length; i++) {
+    if (playerMobile.knownSpells[i].stringName === spellChoice){
+      spellChoice = playerMobile.knownSpells[i];
+    }
+  };
+  if (playerMobile.mana - spellChoice.manaCost < 0){
+    util.printToGameWindow('You need more mana to do that','negitive');
+    return;
+  }
+  // TODO break down to a get active spells function
+  switch(spellChoice.stringName){
+
+  case 'Fire Ball':
+    // console.log('casting fireBall');
+    fireBallSpell.castDmg(playerMobile, playerMobile.combatant, 0);
+    if (playerMobile.combatant != null){
+      playerMobile.combatant.combat(playerMobile);
+    }
+    break;
+
+  case 'Lesser Heal':
+    lesserHealSpell.castHeal(playerMobile, playerMobile,0);
+    break;
+    // add new spells here
+  }
+};
+
 combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
   var stamLoss = 0;
-  if (hitBonus < 0 || hitBonus === NaN) {
-    hitBonus = 0;
-  };
-  if (dmgBonus < 0 || dmgBonus === NaN) {
-    dmgBonus = 0;
-  };
+  hitBonus = util.checkNaN(hitBonus);
+  dmgBonus = util.checkNaN(dmgBonus);
   if(attacker.stam === 0){
     util.printToGameWindow(attacker.stringName + ' does not have enough stamina to swing thier weapon', 'negitive');
     return;
@@ -87,9 +158,7 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
         damage += Math.floor(attacker.str / 10);
       }
       var reducedDamage = Math.floor(damage * (defender.armor / 100));
-      if (reducedDamage < 0){
-        reducedDamage = 0;
-      }
+      reducedDamage = util.checkNaN(reducedDamage);
       damage -= reducedDamage;
       damage = Math.floor(damage);
       if (damage < 1){
@@ -103,7 +172,7 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
       }
       else{
         util.printToGameWindow(attacker.stringName +' hits ' + defender.stringName + ' for '+ damage +' damage','negitive');
-        updateStats();
+        playerMobile.updateStats();
         attacker.stam -= stamLoss;
         defender.hitPoints = 0;
         playerMobile.death(attacker);
@@ -146,23 +215,16 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
     damage2 += damage2 * (attacker.str / 1000);
     var critChance = util.getRandomNum(0, Math.floor(attacker.dex / 10));
     if (critChance > util.getRandomNum(0,100)){
-      console.log('player crit Hit for an extra'+ Math.floor(attacker.str / 10) +' damage');
+      // console.log('player crit Hit for an extra'+ Math.floor(attacker.str / 10) +' damage');
       damage += attacker.str / 10;
-
     }
     if (critChance > util.getRandomNum(0,100)){
-      console.log('player crit Hit for an extra'+ Math.floor(attacker.str / 10) +' damage');
+      // console.log('player crit Hit for an extra'+ Math.floor(attacker.str / 10) +' damage');
       damage2 += attacker.str / 10;
+    }
+    var reducedDamage1 = util.checkNaN(Math.floor(damage * (defender.armor / 100)));
+    var reducedDamage2 = util.checkNaN(Math.floor(damage2 * (defender.armor / 100)));
 
-    }
-    var reducedDamage1 = Math.floor(damage * (defender.armor / 100));
-    if (reducedDamage1 < 0){
-      reducedDamage1 = 0;
-    }
-    var reducedDamage2 = Math.floor(damage2 * (defender.armor / 100));
-    if (reducedDamage2 < 0){
-      reducedDamage2 = 0;
-    }
     if (duelWeild){
       if(attacker.rightHand != null){
         damage -= damage * ((attacker.rightHand.numHands + 2) * 10) / 100;
@@ -224,120 +286,15 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
   }
 };
 playerMobile.combat = function(opponent){
-  $('#usePassAb').remove();
-  $('#usePassAbBut').remove();
   playerMobile.combatant = new Monster(opponent.stringName, opponent.level, opponent.hitPoints, opponent.mana, opponent.stam, opponent.str, opponent.wis, opponent.dex, opponent.armor, opponent.magicResist, opponent.minDmg, opponent.maxDmg);
-  $('#opponentStats').fadeIn();
   playerMobile.updateStats();
-  // should be split out of here
-  var castSpell = function(e) {
-    e.preventDefault();
-    var spellChoice = document.getElementById('spells').value;
-    for (var i = 0; i < playerMobile.knownSpells.length; i++) {
-      if (playerMobile.knownSpells[i].stringName === spellChoice){
-        spellChoice = playerMobile.knownSpells[i];
-      }
-    };
-    if (playerMobile.mana - spellChoice.manaCost < 0){
-      util.printToGameWindow('You need more mana to do that','negitive');
-      return;
-    }
-    // break down to a get active spells function
-    switch(spellChoice.stringName){
+  view.startCombat();
 
-    case 'Fire Ball':
-      console.log('casting fireBall');
-      fireBallSpell.castDmg(playerMobile, playerMobile.combatant, 0);
-      if (playerMobile.combatant != null){
-        playerMobile.combatant.combat(playerMobile);
-      }
-      break;
-
-    case 'Lesser Heal':
-      lesserHealSpell.castHeal(playerMobile, playerMobile,0);
-      break;
-    }
-  };
-  //should be spilt out of here
-  var useWepAb = function(e){
-    e.preventDefault();
-    var $abChoice = $('#useWepAb').val();
-    for (var i = 0; i < playerMobile.knownWepAbs.length; i++) {
-      if (playerMobile.knownWepAbs[i].stringName === $abChoice){
-        $abChoice = playerMobile.knownWepAbs[i];
-      }
-    };
-    if (playerMobile.stam - $abChoice.stamCost < 0 ){
-      util.printToGameWindow('You need more stam to do that','negitive');
-      return;
-    }
-    if (playerMobile.mana - $abChoice.manaCost < 0){
-      util.printToGameWindow('You need more mana to do that','negitive');
-      return;
-    }
-    // break down to a getActiveWepAbs function
-    switch($abChoice.stringName){
-    case 'Rest':
-      doCombatRest(playerMobile, playerMobile.combatant);
-      if (playerMobile.combatant != null){
-        playerMobile.combatant.combat(playerMobile);
-      }
-      break;
-
-    case 'Swing Weapon':
-      combat.doMeleeAttack(playerMobile, playerMobile.combatant, 0, 0);
-      if (playerMobile.combatant != null){
-        playerMobile.combatant.combat(playerMobile);
-      }
-      break;
-
-    case 'Flee':
-      combat.endCombat();
-      break;
-
-    case 'Double Strike':
-      doubleStrike.use(playerMobile, playerMobile.combatant);
-      break;
-
-    case 'Poison':
-      var pLevel = Math.floor(playerMobile.wis / 20);
-      var pCount = Math.floor(playerMobile.dex / 5);
-      poison.use(playerMobile, playerMobile.combatant, pLevel, pCount);
-      break;
-
-    case 'Shield Bash':
-      shieldBash.use(playerMobile, playerMobile.combatant, Math.floor(playerMobile.str / 20));
-      break;
-    }
-    //Add new weapon abilities here
-    playerMobile.updateStats();
-  };
   if (this.hitPoints > 0){
     util.printToGameWindow('You are fighting ' + opponent.stringName, 'negitive');
-    var $parent = $('#aggrActions');
-    var $action = $('<select>').attr('id', 'useWepAb');
-    $parent.append($action);
-    var abs = playerMobile.knownWepAbs;
-    for (var i = 0; i < abs.length; i++) {
-      var $opt = $('<option>').html(abs[i].stringName).val(abs[i].stringName);
-      $action.append($opt);
-    };
-    var $wepAbBut = $('<button>').html('Use Ability').attr('id','useWepAbBut');
-    $parent.append($wepAbBut);
-    $('#useWepAbBut').on('click', useWepAb);
-
+    view.makeWepAbList();
     if (this.charClass ==='Wizard'){
-      var $action2 = $('<select>').attr('id','spells');
-      $parent.append($action2);
-      var spells = playerMobile.knownSpells;
-
-      for (var i = 0; i < spells.length; i++) {
-        var $opt = $('<option>').html(spells[i].stringName).val(spells[i].stringName);
-        $action2.append($opt);
-      };
-      var $castBut = $('<button>').attr('id', 'cast').html('Cast Spell');
-      $parent.append($castBut);
-      $('#cast').on('click', castSpell);
+      view.makeSpellList();
     }
   }
   else{

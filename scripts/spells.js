@@ -5,11 +5,10 @@ function Spell(stringName, level,manaCost, minDmg, maxDmg){
   this.minDmg = minDmg;
   this.maxDmg = maxDmg;
 }
+
 Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
   var wisChance = ((attacker.wis - defender.wis) + 100) - 50;
-  if(hitBonus < 0 || hitBonus === NaN){
-    hitBonus = 0;
-  }
+  hitBonus = util.checkNaN(hitBonus);
   if (wisChance < 10){
     wisChance = 10;
   }
@@ -25,11 +24,9 @@ Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
     return false;
   }
 };
+
 Spell.prototype.spellCastChance = function(caster, bonus) {
-  if (bonus === NaN){
-    bonus = 0;
-  }
-  var chance = (caster.wis / this.level) + bonus;
+  var chance = (caster.wis / this.level) + util.checkNaN(bonus);
   if (chance < 10) {
     chance = 10;
   }
@@ -49,6 +46,7 @@ Spell.prototype.spellCastChance = function(caster, bonus) {
     return false;
   }
 };
+
 Spell.prototype.castHeal = function(caster, target, hitBonus){
   if(caster.mana - this.manaCost < 0){
     util.printToGameWindow(caster + ' does not have enough mana to cast that','negitive');
@@ -68,6 +66,7 @@ Spell.prototype.castHeal = function(caster, target, hitBonus){
   }
   playerMobile.updateStats();
 };
+
 Spell.prototype.castDmg = function(attacker, defender, hitBonus){
   if(attacker.mana - this.manaCost < 0){
     util.printToGameWindow(attacker + ' does not have enough mana to cast that','negitive');
@@ -78,16 +77,11 @@ Spell.prototype.castDmg = function(attacker, defender, hitBonus){
   if(this.spellCastChance(attacker, hitBonus)){
     if (this.spellHitChance(attacker, defender, hitBonus)){
       damage += damage * (attacker.wis / 1000);
-
-      var reducedDamage = Math.floor(damage * (defender.magicResist / 100));
-      if (reducedDamage < 0){
-        reducedDamage = 0;
-      }
+      var reducedDamage = util.checkNaN(Math.floor(damage * (defender.magicResist / 100)));
       var critChance = util.getRandomNum(0, Math.floor(attacker.wis / 10));
       if (critChance > util.getRandomNum(0,100)){
         console.log('player crit Hit for an extra'+ Math.floor(attacker.wis / 10) +' damage','positive');
         damage += attacker.wis / 10;
-
       }
       damage -= reducedDamage;
       damage = Math.floor(damage);

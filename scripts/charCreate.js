@@ -1,9 +1,9 @@
-var createChar = function(e) {
+playerMobile.createChar = function(e) {
   e.preventDefault();
   var $stringName = $('#charNameForm');
   var savedChar = localStorage.getItem($stringName);
   var parseChar = JSON.parse(savedChar);
-  console.log('char create function called');
+  // console.log('char create function called');
   if (!$stringName.val() || $stringName.val() === 'Please Enter a Name'){
     $stringName.val('Please Enter a Name');
     return;
@@ -73,4 +73,4 @@ var createChar = function(e) {
   playerMobile.combat(weakSkeleton);
 };
 
-$('#createCharButton').on('click', createChar);
+$('#createCharButton').on('click', playerMobile.createChar);

@@ -1,8 +1,8 @@
 var view = {};
 
 view.removeEqupFromHtml = function() {
-  $('#wepListR').remove();
-  $('#wepListL').remove();
+  $('#rightHandList').remove();
+  $('#leftHandList').remove();
   $('#headList').remove();
   $('#chestList').remove();
   $('#armsList').remove();
@@ -10,55 +10,18 @@ view.removeEqupFromHtml = function() {
   $('#legsList').remove();
   $('#bootsList').remove();
 };
+
 view.playerEqiupToHtml = function() {
-  if (playerMobile.rHand != null){
-    $('#rightHand').html(playerMobile.rHand.stringName);
-  }
-  else{
-    $('#rightHand').html(' empty');
-  }
-  if (playerMobile.lHand != null){
-    $('#leftHand').html(playerMobile.lHand.stringName);
-  }
-  else{
-    $('#leftHand').html(' empty');
-  }
-  if (playerMobile.head != null){
-    $('#head').html(playerMobile.head.stringName);
-  }
-  else{
-    $('#head').html(' empty');
-  }
-  if (playerMobile.chest != null){
-    $('#chest').html(playerMobile.chest.stringName);
-  }
-  else{
-    $('#chest').html(' empty');
-  }
-  if (playerMobile.arms != null){
-    $('#arms').html(playerMobile.arms.stringName);
-  }
-  else{
-    $('#arms').html(' empty');
-  }
-  if (playerMobile.gloves != null){
-    $('#gloves').html(playerMobile.gloves.stringName);
-  }
-  else{
-    $('#gloves').html(' empty');
-  }
-  if (playerMobile.legs != null){
-    $('#legs').html(playerMobile.legs.stringName);
-  }
-  else{
-    $('#legs').html(' empty');
-  }
-  if (playerMobile.boots != null){
-    $('#boots').html(playerMobile.boots.stringName);
-  }
-  else{
-    $('#boots').html(' empty');
-  }
+  var tempEquipArray = ['rightHand','leftHand','head','chest','arms','gloves','legs','boots'];
+  tempEquipArray.forEach(function(element,index,array) {
+    // console.log(element);
+    if (playerMobile[element] != null){
+      $('#'+element).html(playerMobile[element].stringName);
+    }
+    else{
+      $('#'+element).html(' empty');
+    }
+  });
   $('#statWindow').attr('style','display:inline');
 };
 view.playerStatsToHtml = function() {
@@ -74,7 +37,7 @@ view.playerStatsToHtml = function() {
   $('#armorTable').html(playerMobile.armor);
   $('#magicResist').html(playerMobile.magicResist);
 };
-view.addOpponentStatsToHtml =function() {
+view.addOpponentStatsToHtml = function() {
   $('#opponentnameTable').html(playerMobile.combatant.stringName);
 // $('opponentclassTable').html(playerMobile.combatant.charClass);
   $('#opponentlevelTable').html('Level = ' + playerMobile.combatant.level);

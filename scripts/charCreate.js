@@ -38,8 +38,8 @@ var createChar = function(e) {
     playerMobile.str = 50;
     playerMobile.dex = 40;
     playerMobile.wis = 10;
-    playerMobile.rHand = dullIronShortSword;
-    playerMobile.lHand = weakWoodenShield;
+    playerMobile.rightHand = dullIronShortSword;
+    playerMobile.leftHand = weakWoodenShield;
     playerMobile.knownWepAbs.push(shieldBash);
     playerMobile.knownWepAbs.push(doubleStrike);
     break;
@@ -50,8 +50,8 @@ var createChar = function(e) {
     playerMobile.str = 40;
     playerMobile.dex = 40;
     playerMobile.wis = 20;
-    playerMobile.rHand = dullIronDagger;
-    playerMobile.lHand = dullIronDagger;
+    playerMobile.rightHand = dullIronDagger;
+    playerMobile.leftHand = dullIronDagger;
     playerMobile.knownWepAbs.push(doubleStrike);
     playerMobile.knownWepAbs.push(poison);
     break;
@@ -62,7 +62,7 @@ var createChar = function(e) {
     playerMobile.str = 40;
     playerMobile.dex = 10;
     playerMobile.wis = 50;
-    playerMobile.rHand = lightWoodenStaff;
+    playerMobile.rightHand = lightWoodenStaff;
     playerMobile.knownSpells.push(fireBallSpell);
     playerMobile.knownSpells.push(lesserHealSpell);
     break;

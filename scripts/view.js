@@ -21,6 +21,7 @@ view.removeArmorFromHtml = function() {
     $('#'+element+'List').remove();
   });
 };
+
 view.removeWepFromHtml = function() {
   $('#rightHandList').remove();
   $('#leftHandList').remove();
@@ -37,6 +38,7 @@ view.playerArmorToHtml = function() {
   });
   $('#statWindow').attr('style','display:inline');
 };
+
 view.playerWepToHtml = function() {
   if (playerMobile.rightHand != null){
     $('#rightHand').html(playerMobile.rightHand.stringName);

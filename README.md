@@ -9,7 +9,7 @@ Currently just using local storage for savedChar function, not sure the which wa
 Creating/loading a character
   To load a character
     just type the name of the character(case senitive),
-     hit the create character button
+     click the create character button
   To create a character,
     type the name you would like,
     choose a class from the drop down menu,
@@ -17,10 +17,18 @@ Creating/loading a character
 Combat
   Melee class
     choose a ability from the drop down menu,
-    hit use ability button
+    click use ability button
   Caster cast
     choose a spell from the spell drop down menu
-    hit cast spell button
+    click cast spell button
     or
     choose a ability for the ability drop down
-    hit the use ability button
+    click the use ability button
+
+Passive abilities
+  Rest-recovery of hits/mana/stam
+    choose rest from ability drop down menu
+    click the use ability button
+  Move-right now just triggers random combat with mob about the players level
+    choose move from abilities drop down menu
+    click the use ability button

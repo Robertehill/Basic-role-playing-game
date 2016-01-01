@@ -1,9 +1,6 @@
 playerMobile.createChar = function(e) {
   e.preventDefault();
   var $stringName = $('#charNameForm');
-  var savedChar = localStorage.getItem($stringName);
-  var parseChar = JSON.parse(savedChar);
-  // console.log('char create function called');
   if (!$stringName.val() || $stringName.val() === 'Please Enter a Name'){
     $stringName.val('Please Enter a Name');
     return;
@@ -20,7 +17,7 @@ playerMobile.createChar = function(e) {
   var charClass = $('#charClass').val();
   playerMobile.stringName = $stringName.val();
   playerMobile.charClass = charClass;
-//give the player char starting weapon abilities here
+  //give the player char starting weapon abilities here
   playerMobile.knownWepAbs.push(swing);
   playerMobile.knownWepAbs.push(flee);
   playerMobile.knownWepAbs.push(cRest);
@@ -66,6 +63,7 @@ playerMobile.createChar = function(e) {
     playerMobile.knownSpells.push(fireBallSpell);
     playerMobile.knownSpells.push(lesserHealSpell);
     break;
+    //add new char classes here
   }
   $('#charCreateForm').remove();
   playerMobile.updateStats();

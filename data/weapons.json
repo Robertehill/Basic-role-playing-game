@@ -1,0 +1,56 @@
+[
+  {
+    "stringName": "a dull iron dagger",
+    "wepType": "pierce",
+    "minDmg": "2",
+    "maxDmg": "5",
+    "stamUsed": "1",
+    "range": "1",
+    "numHands": "0"
+  },
+  {
+    "stringName": "a iron dagger",
+    "wepType": "pierce",
+    "minDmg": "4",
+    "maxDmg": "7",
+    "stamUsed": "1",
+    "range": "1",
+    "numHands": "0"
+  },
+  {
+    "stringName": "",
+    "wepType": "",
+    "minDmg": "",
+    "maxDmg": "",
+    "stamUsed": "",
+    "range": "",
+    "numHands": ""
+  },
+  {
+    "stringName": "a dull iron short sword",
+    "wepType": "slash",
+    "minDmg": "4",
+    "maxDmg": "7",
+    "stamUsed": "2",
+    "range": "1",
+    "numHands": "1"
+  },
+  {
+    "stringName": "a iron short sword",
+    "wepType": "slash",
+    "minDmg": "6",
+    "maxDmg": "10",
+    "stamUsed": "2",
+    "range": "1",
+    "numHands": "1"
+  },
+  {
+    "stringName": "a light wooden staff",
+    "wepType": "bash",
+    "minDmg": "2",
+    "maxDmg": "10",
+    "stamUsed": "2",
+    "range": "2",
+    "numHands": "2"
+  }
+]

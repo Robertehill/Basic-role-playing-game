@@ -9,11 +9,12 @@ function Weapon(stringName, wepType, minDmg, maxDmg, stamUsed, range, numHands){
   this.numHands = numHands;
   this.worth = ((this.minDmg * this.maxDmg) * stamUsed) * 10;
 }
-function Shield(stringName, armor, blockChance){
+function Shield(stringName, rating, blockChance){
   this.stringName = stringName;
-  this.armor = armor;
+  this.rating = rating;
   this.blockChance = blockChance;
   this.wepType = 'shield';
+  this.worth = this.rating * 100;
 }
 function Armor(stringName, rating, magicDef, arType, bodyLoc){
   this.stringName = stringName;
@@ -21,29 +22,28 @@ function Armor(stringName, rating, magicDef, arType, bodyLoc){
   this.magicDef = magicDef;
   this.arType = arType;
   this.bodyLoc = bodyLoc;
+  this.worth = this.rating * 100;
 }
 
-//going to move these to a JSON or SQL file at some point.
+//going to move these to a JSON or SQL or XML file at some point.
 //Weapon(stringName, wepType, minDmg, maxDmg, stamUsed, range, numHands)
 var dullIronDagger = new Weapon('a dull iron dagger', 'pierce', 2, 5, 1, 1, 0);
 lootPackBasic.push(dullIronDagger);
 var ironDagger = new Weapon('a iron dagger', 'pierce', 4, 7, 1, 1, 0);
 lootPackBasic.push(ironDagger);
-
 var dullIronShortSword = new Weapon('a dull iron short sword', 'slash', 4, 7, 2, 1, 1);
 lootPackBasic.push(dullIronShortSword);
-
 var ironShortSword = new Weapon('a iron short sword', 'slash', 6, 10, 2, 1, 1);
 lootPackBasic.push(ironShortSword);
-
-
 var lightWoodenStaff = new Weapon('a light wooden staff', 'bash', 2, 10, 2, 2, 2);
 lootPackBasic.push(lightWoodenStaff);
+
 //Shield(stringName, armor, blockChance)
 var weakWoodenShield = new Shield('a weak wooden shield', 5, 15);
 lootPackBasic.push(weakWoodenShield);
 var rustyMetalShield = new Shield('a rusty metal shield', 10, 10);
 lootPackBasic.push(weakWoodenShield);
+
 //Armor(stringName, rating, magicDef, arType, bodyLoc)
 var thinLeatherHelmet = new Armor('a thin leather helmet', 2, 1, 'leather','head');
 lootPackBasic.push(thinLeatherHelmet);

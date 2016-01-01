@@ -28,10 +28,10 @@ var playerMobile = {
   knownSpells: [],
   knownWepAbs: [],
   passiveAbs: [],
-  armorSlots: ['rightHand','leftHand','head','chest','arms','gloves','legs','boots'],
+  armorSlots: ['head','chest','arms','gloves','legs','boots'],
   combatant: null
 };
-// var playerMobile.combatant = null;
+
 playerMobile.death = function(opponent){
   playerMobile.hits = 1;
   var exp = util.getRandomNum((opponent.level * 10), (opponent.level * 20));
@@ -48,17 +48,18 @@ playerMobile.getMR = function(){
   var tempArmorArray = ['head','chest','arms','gloves','legs','boots'];
   var magicDef = 0;
   tempArmorArray.forEach(function (element,index,array) {
-    if(playerMobile[element]!= null){
+    if(playerMobile[element] !== null){
       magicDef += playerMobile[element].magicDef;
     }
   });
   return magicDef;
 };
+
 playerMobile.getAR = function(){
   var armorRating = 0;
-  var tempArmorArray = ['head','chest','arms','gloves','legs','boots'];
-  tempArmorArray.forEach(function (element,index,array) {
-    if(playerMobile[element] != null){
+  // var tempArmorArray = ['head','chest','arms','gloves','legs','boots'];
+  playerMobile.armorSlots.forEach(function (element) {
+    if(playerMobile[element] !== null){
       armorRating += playerMobile[element].rating;
     }
   });
@@ -124,43 +125,41 @@ playerMobile.levelUp = function(){
 playerMobile.updateStats = function(){
   playerMobile.armor = playerMobile.getAR();
   playerMobile.magicResist = playerMobile.getMR();
-  if (playerMobile.exp >= playerMobile.expToLvl){
-    playerMobile.levelUp();
-  }
+  if (playerMobile.exp >= playerMobile.expToLvl){playerMobile.levelUp();}
   if (playerMobile.hits < 0){playerMobile.hits = 0;}
   if (playerMobile.stam < 0){playerMobile.stam = 0;}
   if (playerMobile.mana < 0){playerMobile.mana = 0;}
+
+  view.removeArmorFromHtml();
+  view.removeWepFromHtml();
+
   view.playerStatsToHtml();
-  view.playerEqiupToHtml();
+  view.playerArmorToHtml();
+  view.playerWepToHtml();
+  view.makeAllArmorLists();
+  view.makeWepList();
+
   controller.saveChar(playerMobile.stringName, playerMobile);
+
   if (playerMobile.combatant != null){
     view.addOpponentStatsToHtml();
   }
-  view.removeEqupFromHtml();
-
-  view.makeEquipList('head');
-  view.makeEquipList('chest');
-  view.makeEquipList('arms');
-  view.makeEquipList('gloves');
-  view.makeEquipList('legs');
-  view.makeEquipList('boots');
-  view.makeWepList();
 };
 
 playerMobile.equipL = function(e){
   e.preventDefault();
   var currentWep = playerMobile.leftHand;
-  var newWep = $('lHandList').val();
+  var newWep = $('leftHandList').val();
   var rightHandWep = playerMobile.rightHand;
   if(newWep === 'None'){
-    if(currentWep != null){
+    if(currentWep !== null){
       playerMobile.inventory.push(currentWep);
     }
     playerMobile.leftHand = null;
     playerMobile.updateStats();
     return;
   }
-  else if(newWep != null){
+  else if(newWep !== null){
     for (var i = 0; i < playerMobile.inventory.length; i++) {
       if(newWep === playerMobile.inventory[i].stringName){
         newWep = playerMobile.inventory[i];
@@ -173,7 +172,7 @@ playerMobile.equipL = function(e){
         if (newWep.wepType != 'shield' && newWep.numHands != 0){
           return;
         }
-        if(rightHandWep != null){
+        if(rightHandWep !== null){
           if(newWep.wepType != 'shield' && rightHandWep.numHands > 1){
             // console.log('can't duel weld this becuase right hand wep is to big');
             return;

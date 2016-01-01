@@ -92,9 +92,7 @@ shieldBash.use = function(attacker, defender, count){
     return;
   }
   if (attacker === playerMobile){
-
     var wepL = attacker.leftHand;
-
     if (wepL != null){
       if (wepL.wepType === 'shield'){
         if(count < 1 ){

@@ -191,7 +191,6 @@ poison.use = function(attacker, defender, level, count){
         if(combat.hitChance(attacker,defender, 25)){
           // console.log('poison works');
           util.printToGameWindow(attacker.stringName +' has hit '+ defender.stringName +' for '+wepDmg+' damage and poisoned them','positive');
-
           defender.hits -= wepDmg;
           defender.poisoned = true;
           defender.poisonCount = count;

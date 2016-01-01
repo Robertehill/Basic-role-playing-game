@@ -20,9 +20,7 @@ controller.loadChar = function(stringName){
   var parseChar = JSON.parse(savedChar);
   if (parseChar != null){
     Object.keys(parseChar).forEach(function(element){
-      // console.log(playerMobile[element]);
       playerMobile[element] = parseChar[element];
-
     });
   }
   util.printToGameWindow(playerMobile.stringName +' the ' + playerMobile.charClass +' has joined the world!');

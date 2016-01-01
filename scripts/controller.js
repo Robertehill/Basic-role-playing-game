@@ -18,18 +18,16 @@ controller.saveChar = function (stringName, data){
 controller.loadChar = function(stringName){
   var savedChar = localStorage.getItem(stringName);
   var parseChar = JSON.parse(savedChar);
-  // console.log(Object.keys(parseChar));
-  // console.log(parseChar);
-  if (stringName != null){
+  if (parseChar != null){
     Object.keys(parseChar).forEach(function(element){
-      if(playerMobile[element] !== null){
-        playerMobile[element] = parseChar[element];
-      }
+      // console.log(playerMobile[element]);
+      playerMobile[element] = parseChar[element];
+
     });
-    util.printToGameWindow(playerMobile.stringName +' the ' + playerMobile.charClass +' has joined the world!');
-    playerMobile.passiveActs();
-    playerMobile.updateStats();
   }
+  util.printToGameWindow(playerMobile.stringName +' the ' + playerMobile.charClass +' has joined the world!');
+  playerMobile.passiveActs();
+  playerMobile.updateStats();
 };
 // start eventHandlers on doc ready
 $(function() {

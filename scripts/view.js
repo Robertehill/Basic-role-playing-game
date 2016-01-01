@@ -16,13 +16,17 @@ view.startCombat = function() {
   $('#opponentStats').fadeIn();
 };
 
-view.removeEqupFromHtml = function() {
+view.removeArmorFromHtml = function() {
   playerMobile.armorSlots.forEach(function(element,index,array) {
     $('#'+element+'List').remove();
   });
 };
+view.removeWepFromHtml = function() {
+  $('#rightHandList').remove();
+  $('#leftHandList').remove();
+};
 
-view.playerEqiupToHtml = function() {
+view.playerArmorToHtml = function() {
   playerMobile.armorSlots.forEach(function(element) {
     if (playerMobile[element] != null){
       $('#'+element).html(playerMobile[element].stringName);
@@ -32,6 +36,20 @@ view.playerEqiupToHtml = function() {
     }
   });
   $('#statWindow').attr('style','display:inline');
+};
+view.playerWepToHtml = function() {
+  if (playerMobile.rightHand != null){
+    $('#rightHand').html(playerMobile.rightHand.stringName);
+  }
+  else{
+    $('#rightHand').html(' empty');
+  }
+  if (playerMobile.leftHand != null){
+    $('#leftHand').html(playerMobile.leftHand.stringName);
+  }
+  else{
+    $('#leftHand').html(' empty');
+  }
 };
 
 view.playerStatsToHtml = function() {
@@ -77,7 +95,7 @@ view.makeSpellList = function() {
   $('#cast').on('click', combat.castSpell);
 };
 
-view.makeEquipList = function(bodyLoc){
+view.makeArmorList = function(bodyLoc){
   var $parent = $('#'+bodyLoc+'Equip');
   var $equipList = $('<select>').attr('id', bodyLoc+'List').append($('<option>').html('None').val('None'));
   $parent.append($equipList);
@@ -90,7 +108,14 @@ view.makeEquipList = function(bodyLoc){
   };
 };
 
+view.makeAllArmorLists = function() {
+  playerMobile.armorSlots.forEach(function(element) {
+    view.makeArmorList(element);
+  });
+};
+
 view.makeDuelWepList = function() {
+  console.log('duel weild list');
   var $parentL = $('#leftHandEquip');
   var $wepListL = $('<select>').attr('id','leftHandList').append($('<option>').html('None').val('None'));
   $parentL.append($wepListL);
@@ -121,6 +146,7 @@ view.makeShieldWepList = function() {
 view.makeWepList = function() {
   var $parentR = $('#rightHandEquip');
   var $wepListR = $('<select>').attr('id','rightHandList').append($('<option>').html('None').val('None'));
+  console.log('right hand make wep list');
   $parentR.append($wepListR);
   for (var i = 0; i < playerMobile.inventory.length; i++){
     var $opt = $('<option>');
@@ -133,6 +159,6 @@ view.makeWepList = function() {
     view.makeDuelWepList();
   }
   else if(playerMobile.charClass === 'Warrior'){
-    makeShieldWepList();
+    view.makeShieldWepList();
   }
 };

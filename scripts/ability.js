@@ -100,7 +100,7 @@ shieldBash.use = function(attacker, defender, count){
         }
         attacker.stam -= this.stamCost;
         attacker.mana -= this.manaCost;
-        if(hitChance(attacker,defender, 25)){
+        if(combat.hitChance(attacker,defender, 25)){
           // console.log('poison works');
           util.printToGameWindow(attacker.stringName +' has stunned '+ defender.stringName, 'negitive');
 

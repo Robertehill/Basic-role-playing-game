@@ -6,7 +6,7 @@ function Spell(stringName, level,manaCost, minDmg, maxDmg){
   this.maxDmg = maxDmg;
 }
 
-Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
+Spell.prototype.hitChance = function(attacker, defender, hitBonus){
   var wisChance = ((attacker.wis - defender.wis) + 100) - 50;
   hitBonus = util.checkNaN(hitBonus);
   if (wisChance < 10){wisChance = 10;}
@@ -19,7 +19,7 @@ Spell.prototype.spellHitChance = function(attacker, defender, hitBonus){
   }
 };
 
-Spell.prototype.spellCastChance = function(caster, bonus) {
+Spell.prototype.castChance = function(caster, bonus) {
   var chance = (caster.wis / this.level) + util.checkNaN(bonus);
   if (chance < 10) {chance = 10;}
   if (chance >= 100) {
@@ -45,7 +45,7 @@ Spell.prototype.castHeal = function(caster, target, hitBonus){
     playerMobile.updateStats();
     return;
   }
-  if (this.spellCastChance(caster, hitBonus)){
+  if (this.castChance(caster, hitBonus)){
     var healAmt = util.getRandomNum(this.minDmg, this.maxDmg);
     if(target.hits + healAmt < target.str){
       target.hits += healAmt;
@@ -66,8 +66,8 @@ Spell.prototype.castDmg = function(attacker, defender, hitBonus){
     return;
   }
   var damage = util.getRandomNum(this.minDmg, this.maxDmg);
-  if(this.spellCastChance(attacker, hitBonus)){
-    if (this.spellHitChance(attacker, defender, hitBonus)){
+  if(this.castChance(attacker, hitBonus)){
+    if (this.hitChance(attacker, defender, hitBonus)){
       damage += damage * (attacker.wis / 1000);
       var reducedDamage = util.checkNaN(Math.floor(damage * (defender.magicResist / 100)));
       var critChance = util.getRandomNum(0, Math.floor(attacker.wis / 10));

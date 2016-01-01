@@ -57,7 +57,6 @@ playerMobile.getMR = function(){
 
 playerMobile.getAR = function(){
   var armorRating = 0;
-  // var tempArmorArray = ['head','chest','arms','gloves','legs','boots'];
   playerMobile.armorSlots.forEach(function (element) {
     if(playerMobile[element] !== null){
       armorRating += playerMobile[element].rating;
@@ -121,26 +120,33 @@ playerMobile.levelUp = function(){
   playerMobile.dex += Math.floor(playerMobile.dex / 10);
   util.printToGameWindow(playerMobile.stringName+' has reached level '+playerMobile.level, 'positive');
 };
+playerMobile.checkForNegStats = function(){
+  if (playerMobile.hits < 0){playerMobile.hits = 0;}
+  if (playerMobile.stam < 0){playerMobile.stam = 0;}
+  if (playerMobile.mana < 0){playerMobile.mana = 0;}
+};
+playerMobile.toHtml = function() {
+  //clear html first
+  view.removeArmorFromHtml();
+  view.removeWepFromHtml();
+  //populate html
+  view.playerStatsToHtml();
+  view.playerArmorToHtml();
+  view.playerWepToHtml();
+  // make drop down lists for weapon and armor
+  view.makeAllArmorLists();
+  view.makeWepList();
+};
 
 playerMobile.updateStats = function(){
   playerMobile.armor = playerMobile.getAR();
   playerMobile.magicResist = playerMobile.getMR();
-  if (playerMobile.exp >= playerMobile.expToLvl){playerMobile.levelUp();}
-  if (playerMobile.hits < 0){playerMobile.hits = 0;}
-  if (playerMobile.stam < 0){playerMobile.stam = 0;}
-  if (playerMobile.mana < 0){playerMobile.mana = 0;}
-
-  view.removeArmorFromHtml();
-  view.removeWepFromHtml();
-
-  view.playerStatsToHtml();
-  view.playerArmorToHtml();
-  view.playerWepToHtml();
-  view.makeAllArmorLists();
-  view.makeWepList();
-
+  if (playerMobile.exp >= playerMobile.expToLvl){
+    playerMobile.levelUp();
+  }
+  playerMobile.checkForNegStats();
+  playerMobile.toHtml();
   controller.saveChar(playerMobile.stringName, playerMobile);
-
   if (playerMobile.combatant != null){
     view.addOpponentStatsToHtml();
   }

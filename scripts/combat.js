@@ -33,25 +33,8 @@ combat.randomCombat = function(level, chance){
     }
   };
 };
-//TODO  make useable by NPCs
-combat.useWepAb = function(e){
-  e.preventDefault();
-  var abChoice = $('#useWepAb').val();
-  for (var i = 0; i < playerMobile.knownWepAbs.length; i++) {
-    if (playerMobile.knownWepAbs[i].stringName === abChoice){
-      abChoice = playerMobile.knownWepAbs[i];
-    }
-  };
-  if (playerMobile.stam - abChoice.stamCost < 0 ){
-    util.printToGameWindow('You need more stam to do that','negitive');
-    return;
-  }
-  if (playerMobile.mana - abChoice.manaCost < 0){
-    util.printToGameWindow('You need more mana to do that','negitive');
-    return;
-  }
-  // TODO break down to a getActiveWepAbs function
-  switch(abChoice.stringName){
+combat.chooseAbility = function(abilityStringName) {
+  switch(abilityStringName){
   case 'Rest':
     doCombatRest(playerMobile, playerMobile.combatant);
     if (playerMobile.combatant != null){
@@ -83,8 +66,27 @@ combat.useWepAb = function(e){
   case 'Shield Bash':
     shieldBash.use(playerMobile, playerMobile.combatant, Math.floor(playerMobile.str / 20));
     break;
+    //Add new weapon abilities here
   }
-  //Add new weapon abilities here
+};
+//TODO  make useable by NPCs
+combat.useWepAb = function(e){
+  e.preventDefault();
+  var abChoice = $('#useWepAb').val();
+  for (var i = 0; i < playerMobile.knownWepAbs.length; i++) {
+    if (playerMobile.knownWepAbs[i].stringName === abChoice){
+      abChoice = playerMobile.knownWepAbs[i];
+    }
+  };
+  if (playerMobile.stam - abChoice.stamCost < 0 ){
+    util.printToGameWindow('You need more stam to do that','negitive');
+    return;
+  }
+  if (playerMobile.mana - abChoice.manaCost < 0){
+    util.printToGameWindow('You need more mana to do that','negitive');
+    return;
+  }
+  combat.chooseAbility(abChoice.stringName);
   playerMobile.updateStats();
 };
 // TODO make useable by NPCs
@@ -133,7 +135,7 @@ combat.doMeleeAttack = function(attacker, defender, hitBonus, dmgBonus){
         if (playerMobile.leftHand.wepType === 'shield'){
           var shield = playerMobile.leftHand;
           if (shield.blockChance > util.getRandomNum(1,100)){
-            var reducedDamage = Math.floor(damage * ((shield.armor * 2) / 100));
+            var reducedDamage = Math.floor(damage * ((shield.rating * 2) / 100));
             if (reducedDamage < 1){
               reducedDamage = 1;
             }
